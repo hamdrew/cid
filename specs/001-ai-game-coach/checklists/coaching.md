@@ -12,68 +12,163 @@
 **Review Ownership**: This checklist is a reviewer-owned requirements-quality review artifact. Mark an item `[x]` only when the reviewer determines the requirements-quality criterion is satisfied.
 **Marker Semantics**: `[x]` means the criterion has been reviewed and satisfied for requirements quality. It does not mean implementation work is complete.
 
+## Review result — 2026-11-08
+
+Reviewed at the user's explicit request against the current specification, plan,
+data model, both contracts, and constitution. The linked quickstart supplies the
+plan's acceptance definitions and procedures; research decision 6 supplies its
+explicit constitution interpretation.
+
+- **Satisfied**: 36 of 36 requirements-quality criteria; **unresolved**: 0.
+- Each item below includes the supporting sections and the reason it is satisfied.
+- No requirements gap or new scope decision is needed to satisfy this checklist.
+  CHK012 accepts the documented interpretation of default Hints behavior, not a
+  ratified amendment; explicit requests remain narrowly scoped.
+- **Separate governance follow-up**: Constitution 1.0.0 still has
+  `TODO(RATIFICATION_DATE)`. The maintainer must confirm the original adoption date
+  if completing that metadata. This is not a missing coaching requirement, and
+  this review does not choose a date or change the constitution.
+- **Acceptance work remains**: Actual host source-display compatibility (FR-009),
+  verified saves/resumption, capability-dependent trials, and real-player results
+  remain unverified until implementation and the quickstart trials are performed.
+  Checked items establish documented requirements quality, not passing product tests.
+- Only this reviewer-owned checklist is changed by this review. Historical
+  generation metadata above is preserved; implementation has not been resumed.
+
 ## Requirement Completeness
 
-- [ ] CHK001 Are the minimum requirements for useful first-session help defined, including game identity, relevant version context, sufficient evidence, and skippable progress questions? [Completeness, Spec §FR-002–FR-004, §User Story 1]
-- [ ] CHK002 Are requirements complete for evidence applicability, source coverage, actual access status, and the distinction between sourced facts and untested deductions? [Completeness, Spec §FR-005–FR-011, §FR-021, §Key Entities]
-- [ ] CHK003 Are the coaching-relevant information categories and the separation of workspace, game, and playthrough records explicitly specified for fresh conversations in both hosts? [Completeness, Spec §FR-001, §FR-012–FR-014, §User Story 3]
-- [ ] CHK004 Are requirements defined for all spoiler modes, the initial default, later preference changes, and protection across every supported response format? [Completeness, Spec §FR-024–FR-027, §User Story 4]
+- [x] CHK001 Are the minimum requirements for useful first-session help defined, including game identity, relevant version context, sufficient evidence, and skippable progress questions? [Completeness, Spec §FR-002–FR-004, §User Story 1]
+
+  **Review evidence**: Spec FR-002–FR-004 and Story 1 require relevant identity/version questions, sufficient research, and skippable setup. The [coaching contract, Request and response behavior](../contracts/coaching.md#request-and-response-behavior) defines a useful next action and conditional help when information is skipped.
+- [x] CHK002 Are requirements complete for evidence applicability, source coverage, actual access status, and the distinction between sourced facts and untested deductions? [Completeness, Spec §FR-005–FR-011, §FR-021, §Key Entities]
+
+  **Review evidence**: Spec FR-005–FR-011 and FR-021 are concretized by [Knowledge finding](../data-model.md#knowledge-finding), [Source reference](../data-model.md#source-reference), and [Integration record](../data-model.md#integration-record): applicability, coverage, accessed evidence, observed query outcomes, and labelled deductions are separate obligations.
+- [x] CHK003 Are the coaching-relevant information categories and the separation of workspace, game, and playthrough records explicitly specified for fresh conversations in both hosts? [Completeness, Spec §FR-001, §FR-012–FR-014, §User Story 3]
+
+  **Review evidence**: Spec FR-001 and FR-012–FR-014 enumerate retained information and require both hosts. [Workspace](../data-model.md#workspace), [Game](../data-model.md#game), and [Playthrough, progress entry, and plan](../data-model.md#playthrough-progress-entry-and-plan) separate ownership; [session entry](../contracts/workspace.md#session-entry-and-context-selection) loads the selected records without relying on chat history.
+- [x] CHK004 Are requirements defined for all spoiler modes, the initial default, later preference changes, and protection across every supported response format? [Completeness, Spec §FR-024–FR-027, §User Story 4]
+
+  **Review evidence**: Spec Story 4 and FR-024–FR-027 cover default Hints, all three modes, saved changes, and text fallback. [Spoiler permissions](../contracts/coaching.md#spoiler-permissions) applies the effective mode to headings, prose, links, descriptions, images/captions, and interactive states.
 
 ## Requirement Clarity
 
-- [ ] CHK005 Are “sufficient applicable evidence,” “dependable sources,” and the stopping point for research defined precisely enough to distinguish justified reuse from an unresolved information need? [Clarity, Ambiguity, Spec §FR-003, §FR-005–FR-008, §FR-011]
-- [ ] CHK006 Is “meaningful update” defined with clear inclusion and exclusion boundaries, and is its required persistence timing more precise than “during conversation”? [Clarity, Spec §FR-014–FR-015, §Assumptions]
-- [ ] CHK007 Are “first relevant opportunity,” assumed follow-through, and successful completion distinguished sufficiently to prevent a recommendation from becoming a reported outcome? [Clarity, Spec §FR-016–FR-018, §User Story 5]
-- [ ] CHK008 Are established player knowledge, an explicit specific spoiler request, and the scope and duration of Strict permission each defined unambiguously? [Clarity, Ambiguity, Spec §FR-025–FR-026, §User Story 4]
+- [x] CHK005 Are “sufficient applicable evidence,” “dependable sources,” and the stopping point for research defined precisely enough to distinguish justified reuse from an unresolved information need? [Clarity, Ambiguity, Spec §FR-003, §FR-005–FR-008, §FR-011]
+
+  **Review evidence**: The [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) defines sufficiency as actually accessed support applicable to the known context without material unresolved conflict. Spec FR-008 supplies source-quality dimensions; the contract stops research when the current need is resolved and defines when it reopens.
+- [x] CHK006 Is “meaningful update” defined with clear inclusion and exclusion boundaries, and is its required persistence timing more precise than “during conversation”? [Clarity, Spec §FR-014–FR-015, §Assumptions]
+
+  **Review evidence**: Spec Assumptions includes future-coaching changes and excludes incidental conversation. The [Write and recovery contract](../contracts/workspace.md#write-and-recovery-contract) requires attempting the save in the response handling the update, before unrelated topics, verifying the target, and disclosing failure or uncertainty in that response.
+- [x] CHK007 Are “first relevant opportunity,” assumed follow-through, and successful completion distinguished sufficiently to prevent a recommendation from becoming a reported outcome? [Clarity, Spec §FR-016–FR-018, §User Story 5]
+
+  **Review evidence**: The [Request and response behavior](../contracts/coaching.md#request-and-response-behavior) offers the preference at the first concrete recommendation where an assumed attempt is useful. [Follow-through and correction behavior](../contracts/coaching.md#follow-through-and-correction-behavior) distinguishes unset/disabled, explicit enablement, an assumed attempt, and reported success; the [plan model](../data-model.md#playthrough-progress-entry-and-plan) reserves completion for player reports.
+- [x] CHK008 Are established player knowledge, an explicit specific spoiler request, and the scope and duration of Strict permission each defined unambiguously? [Clarity, Ambiguity, Spec §FR-025–FR-026, §User Story 4]
+
+  **Review evidence**: [Spoiler permissions](../contracts/coaching.md#spoiler-permissions) defines established knowledge as current player-reported knowledge, limits Strict permission to the named answer/detail in the current exchange, and requires neutral clarification of ambiguous permission. Spec FR-025 and the contract scope a specific Hints request to its requested answer, with Hints retained afterward.
 
 ## Requirement Consistency
 
-- [ ] CHK009 Are the ordered research requirements and the obligation to use relevant integrations consistent about stopping when saved or indexed evidence is already sufficient? [Consistency, Spec §FR-006, §FR-011, §SC-003]
-- [ ] CHK010 Are the source-on-request requirements consistent with spoiler protection for reference labels, destinations, and descriptions, including a reference request that does not authorize a spoiler? [Consistency, Spec §FR-009, §FR-025–FR-026; Coaching Contract §Evidence and access sequence, §Spoiler permissions]
-- [ ] CHK011 Are unscoped preference changes, narrower overrides, effective choices, and partial persistence outcomes specified consistently across the specification and planning documents? [Consistency, Spec §Assumptions, §FR-019, §FR-024; Data Model §Preference; Coaching Contract §Request and response behavior]
-- [ ] CHK012 Is the one-time Hints exception explicitly reconciled with the constitution's Hints protection rule, with any interpretation or required amendment clearly distinguished from ratified policy? [Consistency, Conflict, Spec §FR-025, §Assumptions; Constitution §IV, §Governance; Plan §Constitution Check]
+- [x] CHK009 Are the ordered research requirements and the obligation to use relevant integrations consistent about stopping when saved or indexed evidence is already sufficient? [Consistency, Spec §FR-006, §FR-011, §SC-003]
+
+  **Review evidence**: Spec FR-006 explicitly requires stopping at sufficient evidence. The [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) reconciles FR-011 by querying an integration only while a relevant need remains after local/indexed checks. [SC-003 trial coverage](../quickstart.md#4-controlled-behavior-trials) requires reuse without broad search in both hosts.
+- [x] CHK010 Are the source-on-request requirements consistent with spoiler protection for reference labels, destinations, and descriptions, including a reference request that does not authorize a spoiler? [Consistency, Spec §FR-009, §FR-025–FR-026; Coaching Contract §Evidence and access sequence, §Spoiler permissions]
+
+  **Review evidence**: Spec Story 2 scenario 7 makes source display subject to spoiler settings. [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) filters references; [Spoiler permissions](../contracts/coaching.md#spoiler-permissions) explicitly says a reference request is not blanket spoiler authorization and requires omitting/deferring revealing locators.
+- [x] CHK011 Are unscoped preference changes, narrower overrides, effective choices, and partial persistence outcomes specified consistently across the specification and planning documents? [Consistency, Spec §Assumptions, §FR-019, §FR-024; Data Model §Preference; Coaching Contract §Request and response behavior]
+
+  **Review evidence**: Spec Assumptions sets workspace persistence unless scoped otherwise. [Preference](../data-model.md#preference) and [Request and response behavior](../contracts/coaching.md#request-and-response-behavior) agree on precedence, superseding a conflicting active override, preserving other contexts, default-only requests, active-first save order, and partial-save disclosure.
+- [x] CHK012 Is the one-time Hints exception explicitly reconciled with the constitution's Hints protection rule, with any interpretation or required amendment clearly distinguished from ratified policy? [Consistency, Conflict, Spec §FR-025, §Assumptions; Constitution §IV, §Governance; Plan §Constitution Check]
+
+  **Review evidence**: [Research decision 6, Constitution interpretation](../research.md#6-evidence-source-visibility-and-spoilers) explicitly reconciles clarified FR-025 with default Hints, limits the exception to the requested answer, and labels it an interpretation rather than an amendment. [Plan Constitution Check](../plan.md#constitution-check) cites that rationale. [Constitution IV](../../../.specify/memory/constitution.md#iv-spoiler-protection-by-default) governs default behavior; [Governance](../../../.specify/memory/constitution.md#governance) keeps direct user instructions binding and requires maintainer review for amendments. This review accepts the documented default-behavior interpretation; it does not ratify a constitution change or authorize unrelated spoilers.
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK013 Does SC-001 define “actionable next step,” the counting of setup replies, and the treatment of skipped questions precisely enough for independent reviewers to reach the same result? [Measurability, Spec §SC-001, §User Story 1]
-- [ ] CHK014 Are the evaluated factual-answer and source-reuse scenario sets bounded and traceable, with objective criteria for applicable support and a repeated broad search? [Measurability, Spec §SC-002–SC-003, §Measurable Outcomes]
-- [ ] CHK015 Do the acceptance criteria distinguish successful persistence, disclosed failure, and untested outcomes while defining the required host-resumption combinations and correction-dependency coverage? [Acceptance Criteria Quality, Spec §SC-004–SC-005, §SC-007; Plan §Constitution Check]
-- [ ] CHK016 Are the usefulness-rating scale, player-review procedure, equivalence of text alternatives, and definition of an unauthorized spoiler sufficiently specified for repeatable assessment? [Measurability, Spec §SC-006, §SC-008, §FR-027, Gap]
+- [x] CHK013 Does SC-001 define “actionable next step,” the counting of setup replies, and the treatment of skipped questions precisely enough for independent reviewers to reach the same result? [Measurability, Spec §SC-001, §User Story 1]
+
+  **Review evidence**: [Scoring definitions](../quickstart.md#scoring-definitions) defines an actionable step, excludes clarification alone, counts each setup-response message once, excludes the initial request, and includes skipped replies. [Start each host and check setup](../quickstart.md#3-start-each-host-and-check-setup) fixes ten trials and the nine-within-three threshold required by SC-001.
+- [x] CHK014 Are the evaluated factual-answer and source-reuse scenario sets bounded and traceable, with objective criteria for applicable support and a repeated broad search? [Measurability, Spec §SC-002–SC-003, §Measurable Outcomes]
+
+  **Review evidence**: [Scoring definitions](../quickstart.md#scoring-definitions) defines accessed applicable support and broad search, and requires a frozen manifest with story/scenario/SC IDs before trials. [Controlled behavior trials](../quickstart.md#4-controlled-behavior-trials) enumerates SC-002 cases in both hosts and SC-003 saved/indexed reuse repeated in fresh conversations; failures and untested cases cannot be removed from reporting.
+- [x] CHK015 Do the acceptance criteria distinguish successful persistence, disclosed failure, and untested outcomes while defining the required host-resumption combinations and correction-dependency coverage? [Acceptance Criteria Quality, Spec §SC-004–SC-005, §SC-007; Plan §Constitution Check]
+
+  **Review evidence**: [Controlled behavior trials](../quickstart.md#4-controlled-behavior-trials) names all four host pairs, distinct-context markers, meaningful-update classes, and assumption-chain corrections. [Fresh-session and correction procedure](../quickstart.md#5-fresh-session-and-correction-procedure) checks persisted transitive corrections. [Evidence and acceptance report](../quickstart.md#7-evidence-and-acceptance-report) requires pass/fail/untested outcomes, traces, and snapshots; failed-save disclosure is not represented as successful persistence.
+- [x] CHK016 Are the usefulness-rating scale, player-review procedure, equivalence of text alternatives, and definition of an unauthorized spoiler sufficiently specified for repeatable assessment? [Measurability, Spec §SC-006, §SC-008, §FR-027, Gap]
+
+  **Review evidence**: [Scoring definitions](../quickstart.md#scoring-definitions) supplies anchored 1–5 ratings, the redirection question, equivalent-text criteria, and unauthorized-disclosure criteria covering the whole response. [Controlled behavior trials](../quickstart.md#4-controlled-behavior-trials) requires at least five actual players across both hosts and three games, with the same four meeting usefulness and redirection conditions.
 
 ## Scenario Coverage
 
-- [ ] CHK017 Are primary and alternate coaching requirements complete for immediate questions, open-ended goals, skipped interviews, redirected goals, and changes in research depth? [Coverage, Spec §User Story 1, §User Story 6, §FR-020–FR-023]
-- [ ] CHK018 Are exception requirements defined for contradictory or version-incompatible evidence, inaccessible sources, and discovered but unavailable integrations without permitting invented facts or access claims? [Coverage, Spec §User Story 2, §Edge Cases, §FR-007–FR-011]
-- [ ] CHK019 Are recovery requirements complete for a corrected assumption, transitive dependent advice, rejected recommendations, and later disablement of follow-through? [Coverage, Spec §User Story 5, §FR-016–FR-019; Coaching Contract §Follow-through and correction behavior]
-- [ ] CHK020 Are requirements specified for interrupted or partially persisted updates, preserving valid saved progress, identifying unsaved changes, and reconsidering advice dependent on incomplete records? [Coverage, Spec §FR-015, §Edge Cases; Workspace Contract §Write and recovery contract]
+- [x] CHK017 Are primary and alternate coaching requirements complete for immediate questions, open-ended goals, skipped interviews, redirected goals, and changes in research depth? [Coverage, Spec §User Story 1, §User Story 6, §FR-020–FR-023]
+
+  **Review evidence**: Spec Stories 1 and 6 and FR-020–FR-023 cover immediate/open-ended requests, skipped questions, redirection, and research depth. [Request and response behavior](../contracts/coaching.md#request-and-response-behavior) specifies conditional or narrower help without a fixed questionnaire, and [Preference](../data-model.md#preference) makes research depth persistent without weakening evidence rules.
+- [x] CHK018 Are exception requirements defined for contradictory or version-incompatible evidence, inaccessible sources, and discovered but unavailable integrations without permitting invented facts or access claims? [Coverage, Spec §User Story 2, §Edge Cases, §FR-007–FR-011]
+
+  **Review evidence**: Spec Story 2 scenarios 3–6 and FR-007–FR-011 require uncertainty and accurate access claims. [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence), [Source reference](../data-model.md#source-reference), and [Integration record](../data-model.md#integration-record) distinguish conflicts, applicability, access failure, discovery, availability, and successful queries.
+- [x] CHK019 Are recovery requirements complete for a corrected assumption, transitive dependent advice, rejected recommendations, and later disablement of follow-through? [Coverage, Spec §User Story 5, §FR-016–FR-019; Coaching Contract §Follow-through and correction behavior]
+
+  **Review evidence**: Spec Story 5 and FR-016–FR-019 require corrections and changed preferences. [State and correction transitions](../data-model.md#state-and-correction-transitions) preserves provenance, invalidates transitive dependents, saves revised guidance with the correction, and prevents new assumptions after disablement; [Follow-through and correction behavior](../contracts/coaching.md#follow-through-and-correction-behavior) carries rejection preferences forward.
+- [x] CHK020 Are requirements specified for interrupted or partially persisted updates, preserving valid saved progress, identifying unsaved changes, and reconsidering advice dependent on incomplete records? [Coverage, Spec §FR-015, §Edge Cases; Workspace Contract §Write and recovery contract]
+
+  **Review evidence**: The [Write and recovery contract](../contracts/workspace.md#write-and-recovery-contract) defines per-file verification and publication order, discloses inconclusive writes, reconciles incomplete references before dependent advice, preserves saved substeps/corrections, and repairs missing registry steps without rolling back valid player state. Spec FR-015 and interruption edge cases establish the parent requirements.
 
 ## Edge Case Coverage
 
-- [ ] CHK021 Are requirements defined for ambiguous game titles, indistinguishable playthroughs, and invalid saved active context without merging or inventing progress? [Edge Case Coverage, Spec §FR-002, §FR-013, §Edge Cases; Workspace Contract §Session entry and context selection]
-- [ ] CHK022 Are requirements explicit for corrupt or unsupported records, unexpected record changes, and incomplete references, including preservation of recoverable player information? [Edge Case Coverage, Spec §FR-012–FR-015; Workspace Contract §Write and recovery contract]
-- [ ] CHK023 Are requirements defined for uncertain player knowledge and unknown spoiler metadata, including non-revealing permission requests and specifically requested spoilers followed by ordinary Hints guidance? [Edge Case Coverage, Spec §FR-025–FR-026, §User Story 4; Coaching Contract §Spoiler permissions]
-- [ ] CHK024 Are the requirements explicit about how changed game versions or newly conflicting findings affect saved advice in the active playthrough and later use of other playthroughs? [Edge Case Coverage, Spec §FR-007–FR-008, §Edge Cases; Data Model §Knowledge finding]
+- [x] CHK021 Are requirements defined for ambiguous game titles, indistinguishable playthroughs, and invalid saved active context without merging or inventing progress? [Edge Case Coverage, Spec §FR-002, §FR-013, §Edge Cases; Workspace Contract §Session entry and context selection]
+
+  **Review evidence**: Spec Story 1 scenario 2, FR-013, and ambiguous-context edge cases prohibit guessing or merging progress. [Session entry and context selection](../contracts/workspace.md#session-entry-and-context-selection) and [Workspace](../data-model.md#workspace) require targeted selection for ambiguous requests or invalid pointers before state-dependent advice.
+- [x] CHK022 Are requirements explicit for corrupt or unsupported records, unexpected record changes, and incomplete references, including preservation of recoverable player information? [Edge Case Coverage, Spec §FR-012–FR-015; Workspace Contract §Write and recovery contract]
+
+  **Review evidence**: The [Write and recovery contract](../contracts/workspace.md#write-and-recovery-contract) requires revision rereads, preservation of recoverable prior content, explicit recovery for unknown versions/corruption, and reconciliation of references and orphaned files without silent reset. [Common rules](../data-model.md#common-rules) prohibits dropping dangling/cyclic dependencies merely to pass validation.
+- [x] CHK023 Are requirements defined for uncertain player knowledge and unknown spoiler metadata, including non-revealing permission requests and specifically requested spoilers followed by ordinary Hints guidance? [Edge Case Coverage, Spec §FR-025–FR-026, §User Story 4; Coaching Contract §Spoiler permissions]
+
+  **Review evidence**: [Spoiler permissions](../contracts/coaching.md#spoiler-permissions) requires targeted questions or less revealing guidance under uncertain boundaries, treats unknown spoiler metadata conservatively, protects permission requests themselves, and limits a specific Hints exception to one answer followed by normal protection. Spec Story 4 and FR-025–FR-026 supply the parent rules.
+- [x] CHK024 Are the requirements explicit about how changed game versions or newly conflicting findings affect saved advice in the active playthrough and later use of other playthroughs? [Edge Case Coverage, Spec §FR-007–FR-008, §Edge Cases; Data Model §Knowledge finding]
+
+  **Review evidence**: [Knowledge finding](../data-model.md#knowledge-finding) reopens review on version changes, contradictions, or failed evidence; affected findings/plans are reconsidered in the selected playthrough before reuse. Other playthroughs reassess on load, without background progress rewrites. This implements Spec FR-007–FR-008 and version/conflict edge cases.
 
 ## Non-Functional Requirements
 
-- [ ] CHK025 Are durability and cross-host portability requirements defined independently of previous conversation history and optional presentation or research capabilities? [Non-Functional Coverage, Spec §FR-001, §FR-012, §FR-027, §SC-004; Plan §Technical Context]
-- [ ] CHK026 Are requirements explicit about preserving user instructions and player records during setup or policy updates, respecting denied access, and treating external source content as evidence rather than authority? [Non-Functional Coverage, Spec §FR-005, §FR-012, Gap; Plan §Structure Decision; Workspace Contract §Write and recovery contract; Coaching Contract §Evidence and access sequence]
-- [ ] CHK027 Are the requirements for concise coaching, bounded research effort, and usable text alternatives assessable without depending on unsupported visuals or unspecified response-time guarantees? [Clarity, Non-Functional Coverage, Spec §FR-011, §FR-022, §FR-027, §SC-001, §SC-008]
-- [ ] CHK028 Are privacy and retention expectations for locally stored player information explicitly defined or intentionally excluded, including any sharing or diagnostic evidence used during evaluation? [Non-Functional Coverage, Gap, Spec §Scope and Operating Constraints, §FR-014; Plan §Technical Context]
+- [x] CHK025 Are durability and cross-host portability requirements defined independently of previous conversation history and optional presentation or research capabilities? [Non-Functional Coverage, Spec §FR-001, §FR-012, §FR-027, §SC-004; Plan §Technical Context]
+
+  **Review evidence**: Spec FR-001, FR-012, FR-027, and SC-004 require shared durable records and text fallback. [Plan Technical Context](../plan.md#technical-context) makes files authoritative rather than host history; [Session entry](../contracts/workspace.md#session-entry-and-context-selection) loads them in either host. Optional research or visual capabilities do not supply persistence.
+- [x] CHK026 Are requirements explicit about preserving user instructions and player records during setup or policy updates, respecting denied access, and treating external source content as evidence rather than authority? [Non-Functional Coverage, Spec §FR-005, §FR-012, Gap; Plan §Structure Decision; Workspace Contract §Write and recovery contract; Coaching Contract §Evidence and access sequence]
+
+  **Review evidence**: [Installation interface](../contracts/workspace.md#installation-interface) preserves existing instructions, overrides, personality, and records during setup/updates. [Write and recovery contract](../contracts/workspace.md#write-and-recovery-contract) prohibits circumventing denied access. [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) treats external material as evidence, not authority to change records or disclose information.
+- [x] CHK027 Are the requirements for concise coaching, bounded research effort, and usable text alternatives assessable without depending on unsupported visuals or unspecified response-time guarantees? [Clarity, Non-Functional Coverage, Spec §FR-011, §FR-022, §FR-027, §SC-001, §SC-008]
+
+  **Review evidence**: Spec FR-011, FR-022, and FR-027 bound research, define coaching style, and require usable text. [Request and response behavior](../contracts/coaching.md#request-and-response-behavior) excludes forced questionnaires/persona and unnecessary announcements; [Scoring definitions](../quickstart.md#scoring-definitions) operationalizes useful actions and text equivalence. [Plan Performance Goals](../plan.md#technical-context) uses setup-reply/reuse targets without inventing latency guarantees.
+- [x] CHK028 Are privacy and retention expectations for locally stored player information explicitly defined or intentionally excluded, including any sharing or diagnostic evidence used during evaluation? [Non-Functional Coverage, Gap, Spec §Scope and Operating Constraints, §FR-014; Plan §Technical Context]
+
+  **Review evidence**: [Record minimization and ownership](../data-model.md#record-minimization-and-ownership) excludes transcripts, secrets, bulk datasets, automatic upload/sync/expiry/deletion, and distinguishes local storage from host inference policies. [Validation prerequisites](../quickstart.md#prerequisites) requires synthetic details, sanitized traces, anonymized human results, deliberate publication, and no automatic upload or commit.
 
 ## Dependencies & Assumptions
 
-- [ ] CHK029 Are required host capabilities distinguished from optional capabilities, with documented consequences when research access, file access, or source-display behavior cannot satisfy the coaching requirements? [Dependencies, Spec §Assumptions, §FR-001, §FR-009, §FR-012; Plan §Technical Context; Coaching Contract §Evidence and access sequence]
-- [ ] CHK030 Is the single-player, sequential-host assumption explicit, and are unsupported simultaneous use and unexpected record changes distinguished without implying a concurrency guarantee? [Assumption, Spec §Assumptions; Plan §Constraints; Workspace Contract §Write and recovery contract]
-- [ ] CHK031 Are the assumptions about player-reported progress, unknown unreported actions, and explicit follow-through enablement consistent with evidence requirements and correction precedence? [Assumption, Spec §Assumptions, §FR-005, §FR-016–FR-019]
-- [ ] CHK032 Are the instruction-and-record delivery boundary, optional companion-program justification, and excluded hosted, mobile, telemetry, ingestion, and automation capabilities consistent across spec and plan? [Dependencies, Consistency, Spec §Scope and Operating Constraints; Plan §Summary, §Constraints; Constitution §MVP Boundaries]
+- [x] CHK029 Are required host capabilities distinguished from optional capabilities, with documented consequences when research access, file access, or source-display behavior cannot satisfy the coaching requirements? [Dependencies, Spec §Assumptions, §FR-001, §FR-009, §FR-012; Plan §Technical Context; Coaching Contract §Evidence and access sequence]
+
+  **Review evidence**: [Plan Technical Context](../plan.md#technical-context) requires authenticated host/file tools and makes individual research integrations optional. [Installation interface](../contracts/workspace.md#installation-interface) identifies blocked policy loading as incompatible setup; [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) supplies uncertainty fallback. [Evidence and acceptance report](../quickstart.md#7-evidence-and-acceptance-report) records denied/unavailable capabilities and source-display incompatibility as coverage limitations rather than full acceptance.
+- [x] CHK030 Is the single-player, sequential-host assumption explicit, and are unsupported simultaneous use and unexpected record changes distinguished without implying a concurrency guarantee? [Assumption, Spec §Assumptions; Plan §Constraints; Workspace Contract §Write and recovery contract]
+
+  **Review evidence**: Spec Assumptions and [Plan Constraints](../plan.md#technical-context) explicitly limit use to one player with sequential editing. [Write and recovery contract](../contracts/workspace.md#write-and-recovery-contract) checks unexpected changes through revision reread/reconciliation and expressly offers no simultaneous-writer or multi-file transaction guarantee.
+- [x] CHK031 Are the assumptions about player-reported progress, unknown unreported actions, and explicit follow-through enablement consistent with evidence requirements and correction precedence? [Assumption, Spec §Assumptions, §FR-005, §FR-016–FR-019]
+
+  **Review evidence**: Spec Assumptions and FR-016–FR-019 separate reports, unknown progress, explicit opt-in, and corrections. [Playthrough, progress entry, and plan](../data-model.md#playthrough-progress-entry-and-plan) preserves provenance; [State and correction transitions](../data-model.md#state-and-correction-transitions) makes reports override assumptions without inferring success. [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) keeps universal-mechanic verification separate from player context.
+- [x] CHK032 Are the instruction-and-record delivery boundary, optional companion-program justification, and excluded hosted, mobile, telemetry, ingestion, and automation capabilities consistent across spec and plan? [Dependencies, Consistency, Spec §Scope and Operating Constraints; Plan §Summary, §Constraints; Constitution §MVP Boundaries]
+
+  **Review evidence**: Spec Scope and Operating Constraints and [Constitution MVP Boundaries](../../../.specify/memory/constitution.md#mvp-boundaries) agree on shared instructions/local records and excluded services, mobile infrastructure, telemetry, ingestion, autonomous gameplay, and exhaustive databases. [Plan Summary](../plan.md#summary) and [Structure Decision](../plan.md#project-structure) choose no companion runtime and keep any mobile use within host facilities.
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK033 Is the distinction between a player report establishing personal progress and evidence establishing a universal game mechanic clear, including when those sources disagree? [Clarity, Ambiguity, Spec §FR-005, §FR-007, §FR-016; Coaching Contract §Evidence and access sequence]
-- [ ] CHK034 Is “missing information materially changes advice” defined sufficiently to reconcile targeted clarification with a player's right to skip questions and still receive qualified help? [Clarity, Ambiguity, Spec §FR-004, §FR-020, §FR-023, §User Story 1]
-- [ ] CHK035 Is the relationship between inferred follow-through and spoiler-boundary knowledge explicit, so an assumed attempt does not silently authorize revelations about an unreported outcome? [Clarity, Gap, Spec §FR-016–FR-018, §FR-025–FR-026]
-- [ ] CHK036 Are requirements-level commitments in planning documents traceable to the specification or clearly identified as additional acceptance obligations, particularly recovery, setup preservation, and preference precedence? [Traceability, Gap, Spec §FR-001, §FR-012–FR-015, §Assumptions; Plan §Phase 1 — Design outcome]
+- [x] CHK033 Is the distinction between a player report establishing personal progress and evidence establishing a universal game mechanic clear, including when those sources disagree? [Clarity, Ambiguity, Spec §FR-005, §FR-007, §FR-016; Coaching Contract §Evidence and access sequence]
+
+  **Review evidence**: [Evidence and access sequence](../contracts/coaching.md#evidence-and-access-sequence) explicitly says player reports establish context, not universal mechanics; conflicting/unverifiable evidence requires specific uncertainty and targeted player information. [Playthrough entries](../data-model.md#playthrough-progress-entry-and-plan) store testimony, while [Knowledge finding](../data-model.md#knowledge-finding) requires applicable accessed support and keeps disputed claims unsettled. Thus neither a player anecdote nor an external mechanic silently substitutes for the other evidence domain.
+- [x] CHK034 Is “missing information materially changes advice” defined sufficiently to reconcile targeted clarification with a player's right to skip questions and still receive qualified help? [Clarity, Ambiguity, Spec §FR-004, §FR-020, §FR-023, §User Story 1]
+
+  **Review evidence**: [Request and response behavior](../contracts/coaching.md#request-and-response-behavior) defines materiality by whether plausible answers change the action, applicability, or permitted disclosure. If skipped, it requires a safe common action or explicit conditional alternatives and withholds unresolved dependent facts/spoilers, reconciling Spec FR-004, FR-020, and FR-023.
+- [x] CHK035 Is the relationship between inferred follow-through and spoiler-boundary knowledge explicit, so an assumed attempt does not silently authorize revelations about an unreported outcome? [Clarity, Gap, Spec §FR-016–FR-018, §FR-025–FR-026]
+
+  **Review evidence**: [Playthrough, progress entry, and plan](../data-model.md#playthrough-progress-entry-and-plan) and [Spoiler permissions](../contracts/coaching.md#spoiler-permissions) expressly prohibit assumed attempts from expanding established knowledge. Only current player reports establish a progress boundary; disclosure permission does not prove completion, and corrected reported knowledge narrows subsequent guidance.
+- [x] CHK036 Are requirements-level commitments in planning documents traceable to the specification or clearly identified as additional acceptance obligations, particularly recovery, setup preservation, and preference precedence? [Traceability, Gap, Spec §FR-001, §FR-012–FR-015, §Assumptions; Plan §Phase 1 — Design outcome]
+
+  **Review evidence**: [Requirement-to-design traceability](../plan.md#requirement-to-design-traceability) maps every FR group to design obligations and acceptance references, explicitly identifying setup preservation, recovery ordering, revision checks, and preference precedence as mechanisms for FR-001 and FR-012–FR-019 and scope assumptions. [Scoring definitions](../quickstart.md#scoring-definitions) operationalizes existing thresholds without adding runtime scope.
 
 ## Notes
 

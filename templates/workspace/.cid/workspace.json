@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "workspace_id": "workspace-template",
+  "games": [],
+  "active": null,
+  "preferences": {},
+  "preference_prompts": {
+    "spoiler_modes_explained": false,
+    "follow_through_offered": false
+  }
+}

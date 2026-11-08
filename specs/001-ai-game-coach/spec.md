@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-07
 
-**Status**: Draft — ready for implementation planning
+**Status**: Implemented for personal use; improvements guided by owner feedback
 
 **Input**: Feature requirements consolidated in this specification.
 
@@ -17,7 +17,7 @@ Cid helps a player decide what to do in a video game using researched game knowl
 - Q: How should Cid show supporting sources in its coaching replies? → A: Keep sources in local records and show them only when requested.
 - Q: When a player using Hints explicitly asks for a puzzle solution or another spoiler, how should Cid respond? → A: Answer the explicit request as a one-time exception; keep Hints afterward.
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios and Behavioral Examples
 
 ### User Story 1 - Get useful help with a new game (Priority: P1)
 
@@ -25,13 +25,13 @@ A player introduces a game, shares as much progress as they wish, and gets help 
 
 **Why this priority**: A player must receive useful coaching before investing in a detailed progress record.
 
-**Independent Test**: Start with an empty workspace and a new-game request. Verify that the coach identifies the game, researches enough to help, and provides an actionable response or a question needed to make one.
+**Optional check**: Introduce a game and current quest for ongoing coaching. Expect a small overview/mechanics research pass and a brief interview about progress, goals and relevant stats/build/equipment before tailored advice. A next-quest lookup alone does not complete onboarding. Skipping questions still allows narrower help.
 
 **Acceptance Scenarios**:
 
-1. **Given** a named game and an immediate goal, **When** the player asks for help, **Then** Cid establishes game identity, researches relevant mechanics and dependable sources, and gives a next action with a reason tied to that goal.
+1. **Given** a named game and a request for ongoing coaching, **When** the player asks for help, **Then** Cid establishes game identity, researches a basic spoiler-safe overview of its gameplay, progression and relevant mechanics using dependable sources, and gathers enough player context to give a suitable next action; finding the next quest objective alone is insufficient.
 2. **Given** an ambiguous game title or a version difference that could change the answer, **When** Cid prepares advice, **Then** it resolves that ambiguity before making dependent claims; it does not require edition, platform, patch, DLC, or mod details that do not affect the answer.
-3. **Given** missing progress, **When** the player starts coaching, **Then** Cid asks a focused initial question, gathers only information needed for the current request, and defers unrelated questions.
+3. **Given** missing coaching context, even if a current quest is named, **When** the player starts coaching, **Then** Cid conducts a brief, skippable interview about progress, goals, relevant level/key stats/build/equipment or game-appropriate equivalents, and current difficulties; it avoids a full stat sheet and unrelated questions.
 4. **Given** the player skips a question or asks for less research, **When** coaching continues, **Then** Cid narrows or qualifies its advice and continues helping without requiring completion of an interview or guessing missing facts.
 5. **Given** a game for which only a few coaching topics are relevant, **When** foundational knowledge is saved, **Then** it covers those topics without requiring empty categories or an exhaustive encyclopedia.
 
@@ -43,7 +43,7 @@ A player asks about a mechanic, build, item, or strategy and receives advice bas
 
 **Why this priority**: Advice that invents mechanics can waste progress and undermine the entire coaching experience.
 
-**Independent Test**: Use controlled questions with saved evidence, missing evidence, contradictory sources, and an unavailable integration. Inspect both the answers and research activity.
+**Optional check**: Use controlled questions with saved evidence, missing evidence, contradictory sources, and an unavailable integration. Inspect both the answers and research activity.
 
 **Acceptance Scenarios**:
 
@@ -63,7 +63,7 @@ A player returns later, using either supported assistant, and continues from sav
 
 **Why this priority**: Durable context removes the need to reconstruct a playthrough each session.
 
-**Independent Test**: Save meaningful updates, end the conversation without a closing command, and resume in each supported host. Include two games and two playthroughs of one game.
+**Optional check**: Save a meaningful update and resume in a fresh conversation using your usual host. If you already use multiple games or playthroughs, switch between them and check that their records stay separate.
 
 **Acceptance Scenarios**:
 
@@ -81,7 +81,7 @@ A player receives useful help that respects how much they want revealed about th
 
 **Why this priority**: An unintended spoiler cannot be undone; protection applies from the first interaction.
 
-**Independent Test**: Use known spoiler-bearing material and a stated player knowledge boundary. Exercise Strict, Hints, Off, an unset preference, and uncertain progress, including links and visual aids when supported.
+**Optional check**: Use known spoiler-bearing material and a stated player knowledge boundary. Exercise Strict, Hints, Off, an unset preference, and uncertain progress, including links and visual aids when supported.
 
 **Acceptance Scenarios**:
 
@@ -102,7 +102,7 @@ A player can let Cid assume follow-through on recommendations, then correct an a
 
 **Why this priority**: This reduces repetitive confirmations while preserving an accurate distinction between plans, inferred actions, and reported outcomes.
 
-**Independent Test**: Enable follow-through, receive multiple recommendations, discuss an alternative, then correct an assumed action on which a later plan depends. Inspect both saved state and revised guidance.
+**Optional check**: Enable follow-through, receive multiple recommendations, discuss an alternative, then correct an assumed action on which a later plan depends. Inspect both saved state and revised guidance.
 
 **Acceptance Scenarios**:
 
@@ -120,7 +120,7 @@ A player asks for advice in their preferred style, changes direction, and receiv
 
 **Why this priority**: Flexible coaching must serve the player's goals rather than require a prescribed sequence.
 
-**Independent Test**: Use a prepared playthrough record to ask about a loadout, request next steps, change goals, and request a comparison. Check that missing information is requested only when it changes advice.
+**Optional check**: Use a prepared playthrough record to ask about a loadout, request next steps, change goals, and request a comparison. Check that missing information is requested only when it changes advice.
 
 **Acceptance Scenarios**:
 
@@ -147,8 +147,8 @@ A player asks for advice in their preferred style, changes direction, and receiv
 
 - **FR-001**: Cid MUST operate in Codex CLI and Claude Code CLI with the same coaching behavior and shared records in a user-selected local folder or repository.
 - **FR-002**: Cid MUST establish game identity and ask about edition, platform, patch, DLC, or mods only when they affect the requested advice.
-- **FR-003**: Initial research MUST establish relevant mechanics, coaching topics, and dependable sources sufficient for the current help request; it MUST NOT require exhaustive coverage or irrelevant categories.
-- **FR-004**: When progress is missing, Cid MUST use a conversational, skippable interview and defer questions not needed for the current request.
+- **FR-003**: For first-time ongoing coaching, initial research MUST establish a basic spoiler-safe foundation covering the game's gameplay loop, progression and mechanics relevant to the player's stage, with dependable reusable sources. A next-quest lookup alone MUST NOT count as sufficient foundational research. Applicable saved research MAY satisfy this need; a clearly limited factual lookup or an explicit request for reduced research MAY use narrower scope. Research MUST NOT require exhaustive coverage or irrelevant categories.
+- **FR-004**: At the start of ongoing coaching, Cid MUST use a brief, conversational, skippable interview to fill material gaps in progress, goals, relevant level/key stats/build/equipment or game-appropriate equivalents, and current difficulties. A known quest location MUST NOT substitute for this context. Cid MUST omit known or irrelevant details, avoid requesting a full stat sheet, and continue with narrower or conditional help when questions are skipped.
 - **FR-005**: Factual game claims MUST be grounded in applicable previously researched knowledge or external evidence; model familiarity alone MUST NOT count as verification.
 - **FR-006**: Before a broad web search, Cid MUST check local knowledge, the saved source index, and relevant available APIs or MCP tools, in that order, stopping when sufficient applicable evidence is found.
 - **FR-007**: Cid MUST research missing, uncertain, conflicting, or potentially outdated facts before presenting them as facts. When verification fails, it MUST explain the specific uncertainty and request useful player information instead of guessing.
@@ -190,20 +190,28 @@ Mobile use may rely on a supported host's existing remote access to an always-on
 - **Integration record**: A game information integration with capabilities, access requirements, and known availability, distinct from evidence actually obtained through it.
 - **Assumption and dependent plan**: An inferred action or state, its distinction from reported facts, and affected recommendations that must be reconsidered if it changes.
 
-## Success Criteria *(mandatory)*
+## Success Criteria
 
-### Measurable Outcomes
+These describe useful personal behavior, not a certification program. The owner uses
+Cid normally and sends bullet points of things they want changed. The scenarios
+above are reference examples; there is no obligation to execute every example,
+complete a host/game matrix, recruit participants or produce scores. A short optional
+checklist lives in the [README](../../README.md#optional-checks). Untried behavior
+remains unknown rather than receiving an inferred pass.
 
-These are acceptance targets, not claims of measured performance. Evaluate the scenarios above using controlled evidence and playthrough records; include both supported hosts, at least three games with different coaching needs, and version-sensitive and unavailable-evidence cases. Record failed and untested scenarios explicitly.
+- **SC-001**: Introducing a game for ongoing coaching produces basic game/progression/mechanics research and a short relevant progress/stat interview, followed by advice tied to the player's situation. It does not merely identify the next quest step. Skipping questions still allows narrower or conditional help. (Story 1)
+- **SC-002**: Factual advice has applicable support; inaccessible, conflicting or version-sensitive evidence produces specific uncertainty rather than invented facts. (Story 2)
+- **SC-003**: Sufficient saved knowledge or indexed sources are reused without unnecessary broad searches. (Story 2)
+- **SC-004**: Fresh conversations can use saved progress and preferences in either supported host. Switching games or runs keeps their progress separate. A mandatory resumption-pair matrix is not required. (Story 3)
+- **SC-005**: Meaningful updates persist without a closing command, or a failed/unconfirmed save is identified in the exchange that handles it. Deliberate failure injection is optional. (Story 3)
+- **SC-006**: Replies and any artifacts respect the effective spoiler mode, reported knowledge and request-specific permissions. A specific Hints exception retains protection for later advice. (Story 4)
+- **SC-007**: Explicitly enabled follow-through avoids repeated preference confirmations, preserves assumed/reported/proposed distinctions and remains correctable. Corrections update dependent advice; proposals do not become false success records. (Story 5)
+- **SC-008**: The owner finds the advice useful and can redirect its goal, depth and style with ordinary requests. Any visual aid includes usable text. Bullet-point feedback is sufficient; no participant count or rating threshold applies. (Story 6)
 
-- **SC-001**: In at least 10 new-game trials with a resolvable title and accessible evidence, at least 9 produce an actionable next step within three player replies to setup questions. Skipping unrelated questions does not prevent help. (Story 1)
-- **SC-002**: In every evaluated factual-answer scenario, asserted game facts have applicable supporting evidence; inaccessible or unresolved evidence produces explicit uncertainty rather than an invented answer. Include at least one conflict and one version mismatch. (Story 2)
-- **SC-003**: In every evaluated question fully answered by applicable saved knowledge or an indexed source, the player receives an answer without a repeated broad search. (Story 2)
-- **SC-004**: All four resumption combinations between the two supported hosts preserve saved progress and preferences without asking the player to repeat recorded history. Switching among two games and two playthroughs of one game introduces zero cross-playthrough progress errors. (Story 3)
-- **SC-005**: In all evaluated meaningful-update scenarios, the update is available in a fresh conversation without a closing command, or a deliberately failed save is clearly disclosed during the original conversation. (Story 3)
-- **SC-006**: In every evaluated spoiler scenario, the complete response respects the selected mode. Cover all three modes, the default, uncertain progress, a changed preference, a specifically requested one-time Hints exception followed by continued Hints protection, and each supported presentation format; there are zero unauthorized disclosures in this set. (Story 4)
-- **SC-007**: After follow-through is enabled, at least three successive recommendations require zero repeated preference confirmations. A correction to an assumed action changes both the saved assumption and dependent advice; alternatives and recommended strategies create zero false records of selection or success. (Story 5)
-- **SC-008**: In a usability review with at least five players, at least four rate the advice at least 4 out of 5 for usefulness and report that they could redirect coaching toward their own goals. Every evaluated visual aid has usable equivalent text. (Story 6)
+The owner may explicitly ask the assistant to review shared transcripts and a test
+workspace/repository in the current conversation. This review can identify issues
+and inform fixes, but cannot launch AI test sessions, model APIs, test agents or
+unattended graders. Deterministic local record checks remain available.
 
 ## Assumptions
 
@@ -212,5 +220,5 @@ These are acceptance targets, not claims of measured performance. Evaluate the s
 - Unless the player specifies a narrower scope, spoiler and follow-through choices persist as workspace preferences across conversations. An explicitly scoped choice is recorded and honored for that scope.
 - The supported hosts provide conversation, local record access, and any available research capabilities. Access to any particular external source or integration is not guaranteed; lack of access invokes the uncertainty behavior.
 - “Meaningful update” means a change that affects future coaching: progress, relevant character details, goals, constraints, preferences, assumptions, outstanding questions, plans, or useful research. Incidental conversation does not require retention.
-- The setup-turn and usability targets are proposed MVP evaluation thresholds where the brief provided no numeric threshold. They measure the coaching experience rather than external source response times.
+- This is a personal-use tool. Feedback can be a short list of requested tweaks; formal trial counts, user recruitment, rating forms and complete scenario coverage are not acceptance gates.
 - Constitution principles I–V apply without exceptions: Story 2 covers evidence, Story 3 portable records, Story 5 correctable assumptions, Story 4 spoilers, and Stories 1 and 6 player-directed coaching. Scope constraints above preserve the constitution's MVP boundary.

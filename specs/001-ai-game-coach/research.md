@@ -157,60 +157,39 @@ are planning choices, not claims of measured product behavior.
   permission before crossing the known boundary. This is a documented interpretation
   of default behavior, not an amendment or permission to reveal unrelated spoilers.
 
-## 7. Validation strategy
+## 7. Personal use and feedback
 
-- **Decision**: Use Python 3.11+ standard-library `unittest` for development-only
-  template/record contract checks, plus observed CLI acceptance trials and human
-  usability review. Python is not required to receive coaching. Record validation
-  checks required fields, types, enums, IDs, references, scope, and dependency cycles.
-- **Rationale**: File validity cannot prove useful, evidence-based, spoiler-safe
-  coaching. Tool traces and fresh processes establish behavior; five actual players
-  establish SC-008. Controlled fixtures support reproducible failure/conflict tests.
-- **Alternatives considered**: Automated keyword checks or an agent grading itself
-  miss semantic failures. A custom API evaluation harness contradicts the delivery
-  goal. A full schema framework is unnecessary for a small, explicit v1 format.
-- **Targets**: Ten new-game trials split across both hosts and at least three games;
-  all four host resumption pairs; denied saves; no-repeat source reuse; uncertainty,
-  integration and version conflicts; all spoiler modes and the Hints exception;
-  three successive follow-through recommendations and a transitive correction;
-  five-player usefulness/redirection review. See [quickstart.md](quickstart.md).
+- **Decision**: Keep the standard-library record/template checks; use the owner's
+  normal play and bullet-point feedback to guide behavioral improvements.
+- **Rationale**: This is a personal tool. Trial quotas, a host/game matrix, ratings
+  and recruited participants add overhead without helping the owner request a tweak.
+- **Optional exploration**: Fresh-session memory, a corrected assumption/goal,
+  preference persistence and separate runs are useful checks when convenient.
+  They are not required gates. See the [README](../../README.md#optional-checks).
+- **Evidence review**: When explicitly requested, review supplied transcripts and a
+  test workspace in the current conversation. Separate observed behavior from
+  uncertainty. Do not launch AI sessions, model APIs, test agents or graders.
+- **Alternative retired**: The original formal acceptance campaign and result
+  matrices are archived outside the active documentation. Earlier observations do
+  not become passes merely because the process is lighter.
 
-## 8. Planning precision and record minimization
+## 8. Record minimization and ownership
 
-- **Decision**: Keep the existing architecture and numeric targets. Define scoring
-  terms in the quickstart before trials, attempt/read back meaningful updates in
-  the response that handles them, and require acyclic finding derivations as well
-  as progress/plan dependencies. Strict disclosure permission is request-specific;
-  it does not alter the saved mode or authorize later unrelated answers.
-- **Rationale**: These details make FR-015, FR-021, FR-025, SC-001, and SC-008
-  objectively assessable. A frozen scenario manifest prevents selective reporting.
-  The same response-level save boundary makes failures visible while the relevant
-  update is still part of the conversation. An interrupted process still requires
-  inspection of actual files and cannot promise persistence.
-- **Alternatives considered**: Leaving scoring to each evaluator makes thresholds
-  incomparable. Treating a one-time permission as a lasting preference risks unwanted
-  spoilers. A new validator runtime, transaction service, or automatic retention
-  subsystem is unnecessary for the specified MVP.
-- **Ownership and privacy boundary**: Retain concise useful records and referenced
-  provenance; never store credentials or integration datasets. Cid adds no automatic
-  upload or deletion service. Host/provider conversation processing remains governed
-  by host configuration; local records do not imply offline inference. Failure trials
-  use synthetic records, and human-review evidence is anonymized and published only
-  by deliberate choice. This operationalizes the existing local-workspace boundary.
+Save meaningful updates in the exchange that handles them, verify the actual target,
+and disclose failed/unconfirmed saves. Keep finding derivations and progress/plan
+references acyclic. Strict permission and specific Hints requests remain scoped to
+the requested answer, not a lasting preference or a completed milestone.
 
-## Planning refresh traceability
+Player records contain concise coaching notes and referenced provenance, not full
+transcripts, credentials or integration datasets. The owner may separately choose
+what to share for feedback. Local records do not imply on-device inference; host
+processing still applies. No new validator runtime, transaction service, telemetry,
+sync, retention or deletion service is introduced.
 
-Host revalidation retained decision 2. Record/correction research retained decisions
-3–5 and added the explicit assumption/spoiler boundary. Decisions 6–8 consolidate
-the current specification's source and spoiler clarifications, measurable scoring,
-recovery timing, and record minimization. The requirement-to-design table in
-[plan.md](plan.md#requirement-to-design-traceability) maps all 27 functional
-requirements to contracts and acceptance criteria. This research did not evaluate
-or change reviewer-owned checklist markers.
+## Current governance
 
-## Research closure
-
-All technical unknowns are resolved to the choices above. Host/model availability,
-acceptance results, and usability scores remain implementation-stage observations,
-not unanswered design questions. The constitution's unconfirmed ratification date
-is existing governance metadata; this plan does not invent or modify it.
+[Constitution v1.2.0](../../.specify/memory/constitution.md) and the owner's approved
+lightweight workflow supersede the previous testing campaign. Core coaching
+principles, the record format and the delivery boundary remain unchanged. The
+original ratification-date TODO is preserved. Ordinary use and feedback do not
+certify behavior that has not been observed.

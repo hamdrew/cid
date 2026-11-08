@@ -1,3 +1,17 @@
+<!--
+Sync Impact Report — temporary amendment review notes; remove before committing.
+Version change: 1.1.0 → 1.2.0 (MINOR: personal-use feedback workflow and explicit
+user-requested evidence-review permission; core principles I–V remain unchanged).
+Modified sections: Development Workflow and Quality Gates.
+Added/removed sections: none. No record migration is required.
+Reason: the owner prefers normal use and bullet-point feedback over a formal test campaign.
+Compatibility: launching AI tools for tests remains prohibited. The assistant may
+review user-shared transcripts/records in the current conversation when requested;
+this does not authorize extra model calls, test agents or unattended grading.
+Dependent artifacts: README, spec, plan, tasks, quickstart and technical references
+are reconciled with the lightweight workflow; redundant docs/scenarios are retired.
+Deferred TODO: original RATIFICATION_DATE remains unknown and is preserved.
+-->
 # Cid Constitution
 
 ## Core Principles
@@ -91,12 +105,29 @@ unresolved deviations before work is accepted. Changes MUST use the simplest app
 the documented requirements; added services, abstractions, or dependencies MUST have a documented
 need.
 
-Validation MUST cover the acceptance scenarios affected by a change. Across the MVP, evidence MUST
-demonstrate useful game setup, fresh-session resumption, source reuse, research under uncertainty,
-focused clarification, persistent follow-through preferences, correction of dependent advice,
-spoiler handling, shared records across both hosts, and separation of games and playthroughs.
-Verification results and remaining limitations MUST be reported accurately; unverified scenarios
-MUST NOT be claimed as passing.
+Behavioral feedback MUST be proportionate to this tool's personal use. The owner uses Cid
+normally and may provide bullet points describing requested tweaks. A short optional checklist
+MAY suggest fresh-session resumption, correction, preference changes and context separation.
+Fixed trial counts, participant quotas, ratings, mandatory transcripts and certification matrices
+MUST NOT be required to use or improve Cid. The behavioral principles remain binding; unobserved
+behavior MUST NOT be claimed as verified.
+
+Development agents and automated workflows MUST NEVER launch AI tooling to execute or simulate
+tests. This includes Codex/Claude sessions, model APIs, AI test agents/subagents, automated players,
+and unattended AI graders or evaluators. Tests, scripts, CI and background processes MUST NOT
+consume additional model inference, subscription allowances, credits or paid AI usage for testing.
+Agents MUST NOT retry such calls or launch them on the user's behalf.
+
+Development agents MAY prepare or inspect test artifacts and run deterministic, model-free local
+checks. When the user explicitly shares or requests review of transcripts and a test workspace or
+repository, the assistant MAY inspect that material in the current conversation, compare replies
+with records, explain issues and propose fixes. This user-requested review MUST NOT launch extra
+AI tools, model calls, test sessions or review subagents, and MUST distinguish observed evidence
+from uncertainty. Sharing artifacts does not authorize unrelated access or ongoing evaluation.
+
+Existing instructions prescribing AI-launched tests, mandatory trial campaigns or automatic
+acceptance scoring are superseded by this workflow. The owner decides what to try and what
+feedback to provide; missing observations require no manufactured test evidence.
 
 Git commits and amendments to existing commits MUST require the user's explicit approval for that
 specific commit. Approval of a design, plan, or file change MUST NOT imply commit approval.
@@ -118,4 +149,4 @@ or non-semantic corrections. Each amendment MUST state its version rationale. In
 1.0.0. Specifications, plans, and implementation reviews MUST assess compliance with the current
 constitution; exceptions MUST record rationale, impact, and a resolution or explicit amendment.
 
-**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm original adoption date. | **Last Amended**: 2026-11-07
+**Version**: 1.2.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm original adoption date. | **Last Amended**: 2026-11-08

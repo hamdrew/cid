@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-a",
+  "sources": [
+    {
+      "id": "source-1",
+      "locator": "fixture://evidence/rules.md",
+      "title": "Synthetic rules",
+      "coverage": [
+        "mechanics"
+      ],
+      "applicability": {
+        "notes": "SYNTHETIC test-1 rules only; other coverage unknown",
+        "patches": [
+          "test-1"
+        ]
+      },
+      "discovered_at": "2026-11-08T00:00:00Z",
+      "access_status": "failed",
+      "last_attempt_at": "2026-11-08T01:00:00Z",
+      "last_success_at": "2026-11-08T00:00:00Z",
+      "quality_notes": "Relevance: shield/speed; maintenance: synthetic fixed rules; version: test-1; specificity: explicit; credibility: controlled fixture"
+    }
+  ]
+}

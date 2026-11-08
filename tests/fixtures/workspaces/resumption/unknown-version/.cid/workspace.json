@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "workspace_id": "synthetic-workspace",
+  "games": [
+    {
+      "game_id": "synthetic-a",
+      "label": "Synthetic A"
+    },
+    {
+      "game_id": "synthetic-b",
+      "label": "Synthetic B"
+    }
+  ],
+  "active": {
+    "game_id": "synthetic-a",
+    "playthrough_id": "run-1"
+  },
+  "preferences": {},
+  "preference_prompts": {
+    "spoiler_modes_explained": false,
+    "follow_through_offered": false
+  }
+}

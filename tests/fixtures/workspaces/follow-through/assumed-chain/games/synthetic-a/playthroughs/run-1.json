@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-a",
+  "playthrough_id": "run-1",
+  "label": "Run one",
+  "context": {
+    "patch": "test-1"
+  },
+  "preferences": {
+    "follow_through": {
+      "value": "enabled",
+      "selected_at": "2026-11-08T00:00:00Z"
+    }
+  },
+  "entries": [
+    {
+      "id": "goal-1",
+      "topic": "goal",
+      "statement": "SYNTHETIC: I want the safer route",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    },
+    {
+      "id": "location-1",
+      "topic": "location",
+      "statement": "SYNTHETIC: I am at checkpoint A",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    },
+    {
+      "id": "attempt-1",
+      "topic": "attempt",
+      "statement": "SYNTHETIC assumed shield trial; no outcome known",
+      "kind": "assumed",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": [
+        {
+          "game_id": "synthetic-a",
+          "type": "plan",
+          "id": "plan-1",
+          "playthrough_id": "run-1"
+        }
+      ]
+    },
+    {
+      "id": "attempt-2",
+      "topic": "attempt",
+      "statement": "SYNTHETIC assumed later route attempt; no outcome known",
+      "kind": "assumed",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": [
+        {
+          "game_id": "synthetic-a",
+          "type": "plan",
+          "id": "plan-2",
+          "playthrough_id": "run-1"
+        }
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "id": "plan-1",
+      "text": "SYNTHETIC: compare shield and speed for the safer route",
+      "status": "proposed",
+      "depends_on": [
+        {
+          "game_id": "synthetic-a",
+          "type": "entry",
+          "id": "goal-1",
+          "playthrough_id": "run-1"
+        }
+      ],
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "reasoning_status": "untested_deduction"
+    },
+    {
+      "id": "plan-2",
+      "text": "SYNTHETIC: compare shield and speed for the safer route",
+      "status": "proposed",
+      "depends_on": [
+        {
+          "game_id": "synthetic-a",
+          "type": "entry",
+          "id": "attempt-1",
+          "playthrough_id": "run-1"
+        }
+      ],
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "reasoning_status": "untested_deduction"
+    },
+    {
+      "id": "plan-3",
+      "text": "SYNTHETIC: compare shield and speed for the safer route",
+      "status": "proposed",
+      "depends_on": [
+        {
+          "game_id": "synthetic-a",
+          "type": "entry",
+          "id": "attempt-2",
+          "playthrough_id": "run-1"
+        }
+      ],
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "reasoning_status": "untested_deduction"
+    }
+  ],
+  "questions": []
+}

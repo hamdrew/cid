@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-b",
+  "playthrough_id": "run-1",
+  "label": "B run",
+  "context": {
+    "patch": "test-1"
+  },
+  "preferences": {
+    "spoiler_mode": {
+      "value": "off",
+      "selected_at": "2026-11-08T00:00:00Z"
+    }
+  },
+  "entries": [
+    {
+      "id": "goal-1",
+      "topic": "goal",
+      "statement": "SYNTHETIC: goal B, explore",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    },
+    {
+      "id": "location-1",
+      "topic": "location",
+      "statement": "SYNTHETIC: checkpoint B",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    }
+  ],
+  "plans": [],
+  "questions": []
+}

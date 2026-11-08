@@ -10,7 +10,7 @@ depth, ask an unforeseen question, or resume in a fresh conversation.
 
 | Intent | Required behavior |
 | --- | --- |
-| Introduce a game and goal | Resolve identity, ask only material context questions, gather enough evidence to give a useful next action |
+| Introduce a game for ongoing coaching | Resolve identity, research a basic game/progression/mechanics foundation, briefly interview about progress and relevant stats/build/equipment, then tailor advice |
 | “What should I do next?” | Use selected progress, goals, constraints, applicable mechanics, and preferences; ask a focused question if a missing fact changes the answer |
 | Compare a loadout or strategy | Explain specific tradeoffs tied to known context; distinguish sourced facts from material untested reasoning |
 | Report progress or correct an assumption | Save selective reported state; override the assumption and reconsider transitive dependent advice |
@@ -24,6 +24,21 @@ A useful answer supplies an action or decision, explains why it fits the player'
 goal, and names material uncertainty. Avoid a mandatory questionnaire, empty knowledge
 categories, forced enthusiasm, a character persona, and unnecessary preference
 announcements. Preserve existing assistant style preferences.
+
+For first-time ongoing coaching, establish a basic spoiler-safe understanding of
+the gameplay loop, progression and stage-relevant mechanics using the evidence
+sequence below. Read suitable overview/mechanics sources, not just a quest's next
+objective. Applicable saved foundation research can be reused. Research does not
+require an encyclopedia or exploration of later story content.
+
+Follow with a small batch of focused, skippable questions about missing progress/
+goals, relevant level/key stats/build/equipment or game-appropriate equivalents,
+and current difficulties. Usually two or three compact questions suffice; there is
+no fixed count, and known details are omitted. A supplied quest location is not a
+complete coaching profile. Avoid demanding a full stat sheet or inventory. Basic
+research and questions may precede tailored advice; interim guidance stays safe and
+conditional. Honor explicit quick-answer/reduced-research requests, and do not
+repeat this orientation once adequate research and context are saved.
 
 A missing detail is material when plausible answers would change the recommended
 action, its applicability, or permitted disclosure. Ask only for that distinction.
@@ -53,6 +68,10 @@ disclose any partial save rather than claiming both scopes changed.
    credibility, and save useful findings with links/locators and access context.
 5. Stop once evidence is adequate. Reopen research for a new information need,
    changed version, contradiction, or failed source; do not scrape exhaustively.
+
+For initial ongoing coaching, the information need includes the basic game,
+progression and relevant mechanics foundation. Supporting one quest step alone
+does not complete that need. A clearly limited factual lookup may use narrower scope.
 
 Evidence is sufficient for a factual claim when an actually accessed source or saved
 finding supports that claim in the relevant known game context, with no material
@@ -118,10 +137,14 @@ exchange, not a lasting mode change or inferred completion. If the scope of a
 permission or specific Hints request is ambiguous, ask a neutral targeted question
 before disclosing the uncertain detail.
 
-## Observable acceptance
+## Feedback and optional evidence
 
-Use transcripts plus actual tool activity and before/after records. Readable prose
-alone cannot demonstrate factual grounding, ordered research, or persistence.
-Supported visual surfaces must be inspected as well as text. Unsupported tools
-require fallback evidence rather than a fabricated successful query or visual.
-See [quickstart.md](../quickstart.md) for the complete success-criteria matrix.
+The owner can report unwanted behavior in bullet points during ordinary use. A
+transcript or saved workspace is optional supporting evidence, not a required form.
+When supplied for review, inspect actual tool activity and saved state to distinguish
+what is known from what remains uncertain. Do not infer factual support, successful
+saves or spoiler safety from fluent prose alone. Optional visual tools are not
+required for feedback; text remains usable without them.
+
+Review stays in the current conversation and must not launch extra AI tools or test
+sessions. See the [README](../../../README.md#give-feedback) for the lightweight loop.

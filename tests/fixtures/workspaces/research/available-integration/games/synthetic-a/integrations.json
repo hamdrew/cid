@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-a",
+  "integrations": [
+    {
+      "id": "integration-1",
+      "name": "SYNTHETIC lookup",
+      "capabilities": [
+        "lookup"
+      ],
+      "coverage": [
+        "mechanics"
+      ],
+      "access_requirements": "Evaluator-provided test tool permission; never credentials",
+      "discovery_locator": "https://example.invalid/tool",
+      "observations": [
+        {
+          "host": "synthetic-test",
+          "checked_at": "2026-11-08T00:00:00Z",
+          "availability": "available",
+          "reason": "Synthetic observation; running host must recheck",
+          "last_query": {
+            "attempted_at": "2026-11-08T00:00:00Z",
+            "outcome": "success",
+            "reference": "synthetic-query-1"
+          }
+        }
+      ]
+    }
+  ]
+}

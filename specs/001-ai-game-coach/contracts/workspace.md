@@ -101,7 +101,7 @@ silently replace a registered record.
 
 ## Development contract checks
 
-Planned `tests/test_contracts.py` validates templates and complete workspace fixtures
+`tests/test_contracts.py` validates templates and complete workspace fixtures
 using the Python standard library. Include positive and deliberately invalid cases:
 
 - JSON/document version, required field types, valid enum values, and ID/path rules.
@@ -113,4 +113,6 @@ using the Python standard library. Include positive and deliberately invalid cas
 - Orphaned/index-failure records that trigger recovery without losing a correction.
 
 These checks do not prove that a host actually saved, researched, resumed, or
-protected spoilers. Those require the observed trials in [quickstart.md](../quickstart.md).
+protected spoilers. The owner observes those behaviors during normal use and may
+share examples for review. See the [optional checks](../../../README.md#optional-checks);
+no complete scenario matrix or formal report is required.
