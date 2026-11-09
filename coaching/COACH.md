@@ -275,7 +275,8 @@ revision changed or was never recorded. After a re-read, save the new
 rather than silently overwriting findings.
 
 **Saving.** The wiki is one source whose `locator` is its reader-facing address.
-Existing per-page sources for the same wiki stay unchanged; note their IDs in the
+Existing per-page sources for the same wiki stay unchanged apart from required
+record repairs (such as the attempt timestamp rule); note their IDs in the
 wiki source's `quality_notes` and cite the wiki-level source for new API-read
 evidence. On a successful read set `access_status` `accessible`, the timestamps
 and `mediawiki.api`, remove any `mediawiki.last_failure`, and note the

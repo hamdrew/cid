@@ -73,3 +73,21 @@ Use the [contract](contracts/mediawiki-research.md) as the reference.
   request and re-read only changed pages.
 
 Send bullet-point feedback if anything is off. Unobserved behaviour stays unverified.
+
+### Observed (2026-11-09, Claude Code session 2d842ea3, owner-shared)
+
+- **Story 1, observed working:** on tap-wizard-2.fandom.com, robots.txt returned
+  a challenge (recorded `unreadable`), and the `/api.php` probe succeeded. Requests
+  were serial with the Cid user agent and the full parameter set. A batched
+  revision check came first, then one search per need and 1–2 reads each, 18
+  requests in total. One wiki-level source was saved with `mediawiki`, and all 15
+  wiki evidence items have `page_title` + `revision_id`. Summaries were in Cid's
+  own words, and the reply disclosed the request count and the wiki's 2022
+  currency.
+- **Issue found:** a per-page legacy source kept `last_success_at` later than
+  `last_attempt_at`, because the "per-page sources stay unchanged" rule overrode
+  the timestamp repair. Policy fixed to allow required record repairs.
+- **Minor:** one extra request after truncating the probe output; section anchors
+  kept trailing heading punctuation.
+- **Not observed:** Stories 2 and 3 (failure paths, reuse in a fresh session).
+

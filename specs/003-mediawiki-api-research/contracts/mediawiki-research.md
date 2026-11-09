@@ -79,7 +79,8 @@ pages are never cited.
 ## Saving
 
 - Wiki source: one wiki-level source; accessible, endpoint, robots status and
-  licence note. Existing per-page sources for the same wiki stay unchanged and are
+  licence note. Existing per-page sources for the same wiki stay unchanged (apart from
+  required record repairs) and are
   noted by ID in its `quality_notes`; new evidence cites the wiki-level source. Failures are
   recorded per the data model, with earlier success preserved.
 - Findings: Cid's own concise statements. Evidence cites the page address,
