@@ -156,9 +156,20 @@ Agents MUST NOT retry such calls or launch them on the user's behalf.
 Development agents MAY prepare or inspect test artifacts and run deterministic, model-free local
 checks. When the user explicitly shares or requests review of transcripts and a test workspace or
 repository, the assistant MAY inspect that material in the current conversation, compare replies
-with records, explain issues and propose fixes. This user-requested review MUST NOT launch extra
-AI tools, model calls, test sessions or review subagents, and MUST distinguish observed evidence
-from uncertainty. Sharing artifacts does not authorize unrelated access or ongoing evaluation.
+with records, explain issues and propose fixes. This user-requested review of transcripts and
+behaviour MUST NOT launch extra AI tools, model calls, test sessions or review subagents, and MUST
+distinguish observed evidence from uncertainty. Sharing artifacts does not authorize unrelated
+access or ongoing evaluation.
+
+Static code review is distinct from behavioural testing. When the user requests it or a review
+workflow calls for it, a development agent MAY dispatch an AI code-review subagent to review
+diffs, specifications, plans, policy text, tests and other repository artifacts. Such a reviewer
+MUST be read-only on the working tree, index and branch state; MAY run only deterministic,
+model-free local checks; MUST NOT make network requests to game wikis or other game sites; MUST
+NOT launch further AI tools, model calls, coaching sessions or nested subagents; and MUST NOT
+claim that Cid's conversational behaviour is verified. Its findings are advisory input for the
+dispatching agent and the owner, not acceptance scoring. Simulated coaching sessions, model-call
+test runs, automated players and AI graders of Cid's behaviour remain prohibited.
 
 Existing instructions prescribing AI-launched tests, mandatory trial campaigns or automatic
 acceptance scoring are superseded by this workflow. The owner decides what to try and what
@@ -202,4 +213,10 @@ reads in `coaching/COACH.md` is tracked as task T021 of feature 003-mediawiki-ap
 ratification date is set to 2026-11-07, the date of the 1.0.0 adoption recorded in the first
 committed version.
 
-**Version**: 1.4.0 | **Ratified**: 2026-11-07 | **Last Amended**: 2026-11-08
+Amendment 1.5.0 permits AI code-review subagents for static review of diffs, specifications and
+repository artifacts, with read-only, no-network, no-nested-AI and no-behavioural-claim limits,
+while keeping the prohibition on AI-launched behavioural testing and on subagents for transcript
+review. This is a MINOR guidance expansion, approved by the maintainer on 2026-11-08. No records,
+policy text or migration are affected.
+
+**Version**: 1.5.0 | **Ratified**: 2026-11-07 | **Last Amended**: 2026-11-08
