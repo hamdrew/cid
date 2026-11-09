@@ -17,6 +17,34 @@ MUST be indexed by coverage. Integration records MUST distinguish discovery from
 Research MUST avoid exhaustive scraping and repeated broad searches without a new information need.
 These rules prevent invented mechanics and make research reusable across sessions.
 
+Web access MUST be ethical and polite. Cid reads websites only as a low-volume, user-directed
+reader acting for the player:
+
+- Access MUST be read-only and anonymous. Cid MUST NOT create or use accounts, sign in, use keys,
+  tokens or cookies, or store any credential. Where a site offers an official read interface
+  (such as a public API), Cid SHOULD prefer it to working around unreadable pages.
+- Cid MUST NOT circumvent a browser challenge, sign-in demand, block, paywall or refusal by any
+  route, including altered or browser-imitating identification, alternate mirrors used to evade
+  the refusal, or scraping the blocked content another way. A refusal ends that route.
+- Where the host lets Cid set its identification, it MUST identify itself honestly as an automated
+  reader with a contact address; it MUST NOT present itself as a browser or a person.
+- When a site's robots rules are readable, Cid MUST honour the groups for all agents, for Cid
+  itself, and for its host's user-initiated agent tokens, and MUST honour published content
+  signals that refuse AI input. Unreadable rules do not by themselves block access.
+- Requests MUST be serial and need-driven: one request at a time per site, only for pages that
+  address a named need, with no crawling, enumeration, link-following without a need or bulk
+  download. Server lag, rate-limit and retry signals MUST be honoured by stopping and waiting at
+  least the advised delay before at most one later retry; repeated refusal ends use of that site
+  for the session. Unchanged content already researched MUST NOT be fetched again.
+- Saved records MUST hold Cid's own concise summaries with source title, address and applicable
+  licence notes, never copied passages beyond short identifying labels.
+- A failed, refused or disallowed access MUST be told to the player plainly, recorded as a
+  failure without erasing earlier success, and followed by the existing research fallbacks;
+  unread content MUST NOT be presented as evidence.
+
+These rules respect site operators, their terms and volunteer-run infrastructure, and keep Cid's
+evidence honest.
+
 ### II. Durable, Portable Player Records
 
 Coaching instructions, game knowledge, source references, player progress, and preferences MUST
@@ -163,4 +191,15 @@ records remain compatible; no migration is required. Runtime policy and contract
 alignment with this boundary remains follow-up work; schema organization outside
 feature specifications is deferred.
 
-**Version**: 1.3.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm original adoption date. | **Last Amended**: 2026-11-08
+Amendment 1.4.0 expands Principle I with explicit ethical, polite web-access rules: read-only
+anonymous access, no circumvention of challenges, blocks or sign-in, honest identification,
+robots rules including host user-initiated tokens and content signals, serial need-driven
+requests with back-off, no re-fetching unchanged content, own-words summaries with attribution,
+and honest disclosure of failed access. This is a MINOR guidance expansion, approved by the
+maintainer on 2026-11-08. It codifies behaviour already required by feature 003 and is compatible
+with existing JSON v1 records; no migration is required. Runtime policy alignment for all web
+reads in `coaching/COACH.md` is tracked as task T021 of feature 003-mediawiki-api-research. The
+ratification date is set to 2026-11-07, the date of the 1.0.0 adoption recorded in the first
+committed version.
+
+**Version**: 1.4.0 | **Ratified**: 2026-11-07 | **Last Amended**: 2026-11-08
