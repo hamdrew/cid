@@ -72,6 +72,9 @@ The following decisions resolve all technical unknowns for this expansion.
   understanding. A partial stop bounds the pass even when full adequacy is impossible.
   Quick help stays within the current limit. A later request can reopen a temporary
   deferral. Explicitly lasting run restrictions use existing reported constraints.
+  Explicitly lasting game/workspace restrictions use optional `research_restrictions`
+  string arrays in the owning v1 records, loaded by both hosts alongside run
+  constraints. This additive field retains old records without migration.
 - **Alternatives considered**: Fetch-until-complete has no safe bound. Arbitrary
   tool budgets can stop before useful evidence or reward redundant fetches. A fixed
   detailed encyclopedia violates scope. Thorough depth still stays relevant/bounded.

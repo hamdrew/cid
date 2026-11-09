@@ -1,17 +1,3 @@
-<!--
-Sync Impact Report — temporary amendment review notes; remove before committing.
-Version change: 1.1.0 → 1.2.0 (MINOR: personal-use feedback workflow and explicit
-user-requested evidence-review permission; core principles I–V remain unchanged).
-Modified sections: Development Workflow and Quality Gates.
-Added/removed sections: none. No record migration is required.
-Reason: the owner prefers normal use and bullet-point feedback over a formal test campaign.
-Compatibility: launching AI tools for tests remains prohibited. The assistant may
-review user-shared transcripts/records in the current conversation when requested;
-this does not authorize extra model calls, test agents or unattended grading.
-Dependent artifacts: README, spec, plan, tasks, quickstart and technical references
-are reconciled with the lightweight workflow; redundant docs/scenarios are retired.
-Deferred TODO: original RATIFICATION_DATE remains unknown and is preserved.
--->
 # Cid Constitution
 
 ## Core Principles
@@ -43,6 +29,27 @@ selective, capturing coaching-relevant progress, goals, character details, const
 outstanding questions, and plans without requiring a complete game-state simulation. A fresh
 conversation MUST be able to resume from these records without requiring the player to repeat
 recorded history.
+
+Player-specific state MUST be stored as data in the appropriate local JSON record:
+workspace-wide choices in the workspace record, game-wide choices in the game record,
+and run-specific context in the playthrough record. This includes preferences, research
+restrictions, goals, progress and reported constraints. Reusable researched game knowledge
+and its evidence MUST remain in game-level knowledge/source records. Scope MUST be explicit
+through record ownership or an established scoped representation; a missing convenient field
+MUST NOT cause a lasting choice to become conversation-only or be embedded in policy text.
+Existing suitable fields MUST be reused. When necessary, a documented additive optional field
+MAY extend the record conventions while preserving existing records and version compatibility.
+Failed or unconfirmed persistence MUST be reported as unsaved, without narrowing requested scope.
+
+Coaching instructions MUST describe general behavior and how to interpret records; they MUST NOT
+serve as storage for player-specific state. During ordinary coaching, the agent MUST treat the
+installed `.cid/COACH.md` as read-only and MUST NOT rewrite, append to or customize it to remember
+player choices, research, corrections or restrictions. General behavior changes belong in the
+repository's source `coaching/COACH.md` through the development workflow. Installation or policy
+replacement is a separate, explicitly requested maintenance action, never an incidental coaching
+save. A player MUST be able to replace the installed policy with a newer distribution without
+losing JSON-held state or restrictions. Existing user-owned host instructions MUST be respected
+without being rewritten as a substitute for data persistence.
 
 ### III. Explicit Assumptions and Correctable Advice
 
@@ -149,4 +156,11 @@ or non-semantic corrections. Each amendment MUST state its version rationale. In
 1.0.0. Specifications, plans, and implementation reviews MUST assess compliance with the current
 constitution; exceptions MUST record rationale, impact, and a resolution or explicit amendment.
 
-**Version**: 1.2.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm original adoption date. | **Last Amended**: 2026-11-08
+Amendment 1.3.0 expands Principle II to separate JSON-held player state from general
+coaching instructions and make installed policy read-only during coaching. This is a
+MINOR guidance expansion, approved by the maintainer on 2026-11-08. Existing JSON v1
+records remain compatible; no migration is required. Runtime policy and contract
+alignment with this boundary remains follow-up work; schema organization outside
+feature specifications is deferred.
+
+**Version**: 1.3.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm original adoption date. | **Last Amended**: 2026-11-08

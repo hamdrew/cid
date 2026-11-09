@@ -3,7 +3,7 @@
 **Branch**: `main` | **Date**: 2026-11-08 | **Spec**: [spec.md](spec.md)
 
 **Input**: `specs/002-game-understanding/spec.md`, including the owner's game understanding requirements.
-**Status**: Research, design and task generation complete. Implementation is pending.
+**Status**: Policy, documentation and model-free record checks implemented.
 Spec Kit resolves feature identifier `002-game-understanding`; the actual Git branch is `main`.
 
 ## Summary
@@ -16,7 +16,9 @@ conversations can reason about tradeoffs and options beyond the current quest.
 
 Keep the Markdown policy, thin host adapters and portable JSON v1 records. No
 runtime, schema migration, graph store, source quota or mandatory questionnaire is
-needed. This feature extends the completed [coach baseline](../001-ai-game-coach/spec.md);
+needed. Lasting game/workspace restrictions use an optional additive v1
+`research_restrictions` string array on the owning record; old records remain valid.
+This feature extends the completed [coach baseline](../001-ai-game-coach/spec.md);
 its specification, plan and implementation history remain unchanged.
 
 ## Technical Context

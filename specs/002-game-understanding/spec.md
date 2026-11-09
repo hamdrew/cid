@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-08
 
-**Status**: Draft specification and design complete; not implemented
+**Status**: Reopened. Implementation tasks are complete. Ordinary-use outcomes remain unobserved.
 
 **Input**: Expand Cid's initial research into a bounded, reusable understanding of
 a game's loop, progression, systems and relationships, meaningful choices and

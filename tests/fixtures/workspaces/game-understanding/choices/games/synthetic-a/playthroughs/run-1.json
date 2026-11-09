@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-a",
+  "playthrough_id": "run-1",
+  "label": "Run one",
+  "context": {
+    "patch": "test-1"
+  },
+  "preferences": {
+    "spoiler_mode": {
+      "value": "hints",
+      "selected_at": "2026-11-08T00:00:00Z"
+    }
+  },
+  "entries": [
+    {
+      "id": "goal-1",
+      "topic": "goal",
+      "statement": "SYNTHETIC: I want the safer route",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    },
+    {
+      "id": "location-1",
+      "topic": "location",
+      "statement": "SYNTHETIC: I am at checkpoint A",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    },
+    {
+      "id": "equipment-1",
+      "topic": "equipment",
+      "statement": "SYNTHETIC: I carry a heavy shield",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    },
+    {
+      "id": "constraint-1",
+      "topic": "constraint",
+      "statement": "SYNTHETIC: I prefer lower damage over speed",
+      "kind": "reported",
+      "status": "current",
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "depends_on": []
+    }
+  ],
+  "plans": [
+    {
+      "id": "practice-plan",
+      "text": "Untested: use the reported heavy shield for one rehearsal if damage is the blocker. It may reduce damage, but slower movement could hurt a timed attempt.",
+      "status": "proposed",
+      "depends_on": [
+        {
+          "game_id": "synthetic-a",
+          "type": "finding",
+          "topic_id": "mechanics",
+          "id": "finding-1"
+        },
+        {
+          "game_id": "synthetic-a",
+          "type": "finding",
+          "topic_id": "mechanics",
+          "id": "finding-2"
+        },
+        {
+          "game_id": "synthetic-a",
+          "type": "finding",
+          "topic_id": "mechanics",
+          "id": "practice-1"
+        },
+        {
+          "game_id": "synthetic-a",
+          "type": "entry",
+          "playthrough_id": "run-1",
+          "id": "equipment-1"
+        },
+        {
+          "game_id": "synthetic-a",
+          "type": "entry",
+          "playthrough_id": "run-1",
+          "id": "goal-1"
+        }
+      ],
+      "recorded_at": "2026-11-08T00:00:00Z",
+      "reasoning_status": "untested_deduction"
+    }
+  ],
+  "questions": [
+    {
+      "id": "trial-blocker",
+      "text": "Are you running out of time or taking too much damage? That changes what to practice.",
+      "status": "open"
+    },
+    {
+      "id": "shield-choice",
+      "text": "Which shield are you carrying? Its weight affects the time tradeoff.",
+      "status": "resolved"
+    }
+  ]
+}

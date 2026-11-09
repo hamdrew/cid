@@ -145,6 +145,8 @@ def acyclic(graph):
 
 def validate_document(kind, d):
     common(d)
+    if kind in ("workspace", "game") and "research_restrictions" in d:
+        strings(d["research_restrictions"])
     if "preferences" in d:
         preferences(d["preferences"])
     if kind == "workspace":
@@ -379,6 +381,10 @@ def validate_workspace(root):
         if kind == "source" and "integration_id" in item:
             require((gid, None, "integration", None, item["integration_id"]) in nodes, "dangling source integration")
     acyclic(graph)
+    for node, item in nodes.items():
+        if node[2] == "finding" and item["kind"] == "deduction" and item["status"] == "supported":
+            require(all(nodes[dependency]["status"] == "supported" for dependency in graph[node]),
+                    "supported deduction needs supported premises")
     # Unregistered records are recovery candidates, never silently authoritative.
     actual = {str(p.relative_to(root)) for p in (root / "games").rglob("*.json")}
     expected = {path for path in documents if path.startswith("games/")}
@@ -630,6 +636,261 @@ class PresentationFixtureTests(unittest.TestCase):
         for name in ("contextual", "deduction", "material-question", "immaterial-question", "style"):
             with self.subTest(name=name):
                 validate_workspace(ROOT / "tests/fixtures/workspaces/player-direction" / name)
+
+class GameUnderstandingContractTests(unittest.TestCase):
+    game = "games/synthetic-a/"
+    mechanics = game + "knowledge/mechanics.json"
+    overview = game + "knowledge/overview.json"
+    run_one = game + "playthroughs/run-1.json"
+
+    def test_connected_workspace(self):
+        documents = validate_workspace(ROOT / "tests/fixtures/workspaces/game-understanding/connected")
+        sourced, derived = documents[self.overview]["findings"]
+        self.assertEqual(sourced["kind"], "fact")
+        self.assertTrue(sourced["evidence"])
+        self.assertIn("Pass-wide coverage:", sourced["applicability"]["notes"])
+        self.assertEqual(derived["kind"], "deduction")
+        self.assertIn("mechanics", {ref["topic_id"] for ref in derived["derived_from"]})
+
+    def test_overview_retains_direct_evidence_and_cross_topic_premises(self):
+        documents = fixture_documents("research", "supported")
+        topic = documents[self.mechanics]
+        premise = topic["findings"][0]
+        direct = deepcopy(premise)
+        direct.update(id="direct", statement="SYNTHETIC: shields reduce trial damage.")
+        deduction = deepcopy(premise)
+        deduction.update(
+            id="connection", kind="deduction", evidence=[],
+            statement="SYNTHETIC: reduced trial damage may make route practice more forgiving.",
+            derived_from=[{"game_id": "synthetic-a", "type": "finding",
+                           "topic_id": "mechanics", "id": premise["id"]}],
+        )
+        documents[self.overview] = topic | {"topic_id": "overview", "findings": [direct, deduction]}
+        documents[self.game + "game.json"]["topics"].append("overview")
+
+        sourced, derived = check_snapshot(documents)[self.overview]["findings"]
+        self.assertEqual(sourced, direct)
+        self.assertEqual(derived, deduction)
+        self.assertNotIn("derived_from", sourced)
+
+        for mutation, reason in (("missing-topic", "dangling"), ("cross-game", "cross-game"),
+                                 ("cycle", "cyclic")):
+            invalid = deepcopy(documents)
+            link = invalid[self.overview]["findings"][1]["derived_from"][0]
+            if mutation == "missing-topic":
+                link["topic_id"] = "missing"
+            elif mutation == "cross-game":
+                link["game_id"] = "synthetic-b"
+            else:
+                invalid[self.mechanics]["findings"][0]["derived_from"] = [
+                    link | {"topic_id": "overview", "id": deduction["id"]}]
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(ContractError, reason):
+                check_snapshot(invalid)
+
+
+    def test_choices_workspace(self):
+        documents = validate_workspace(ROOT / "tests/fixtures/workspaces/game-understanding/choices")
+        run = documents[self.run_one]
+        self.assertEqual({q["id"]: q["status"] for q in run["questions"]},
+                         {"trial-blocker": "open", "shield-choice": "resolved"})
+        answer = next(entry for entry in run["entries"] if entry["id"] == "equipment-1")
+        self.assertEqual(answer["kind"], "reported")
+        strategy = next(f for f in documents[self.mechanics]["findings"] if f["id"] == "practice-1")
+        self.assertEqual(strategy["kind"], "sourced_strategy")
+        self.assertEqual(strategy["evidence"][0]["source_id"], "source-practice")
+        plan, = run["plans"]
+        self.assertEqual(plan["reasoning_status"], "untested_deduction")
+        self.assertTrue({answer["id"], strategy["id"]} <= {ref["id"] for ref in plan["depends_on"]})
+
+    def test_questions_and_untested_advice_stay_with_the_selected_run(self):
+        documents = fixture_documents("player-direction", "deduction")
+        player = documents[self.run_one]
+        questions = [
+            {"id": "q-time", "text": "Is time the limiting factor?", "status": "open"},
+            {"id": "q-shield", "text": "Which shield are you carrying?", "status": "resolved"},
+        ]
+        answer = next(entry for entry in player["entries"] if entry["id"] == "equipment-1")
+        fact_ref = {"game_id": "synthetic-a", "type": "finding", "topic_id": "mechanics", "id": "finding-1"}
+        answer_ref = {"game_id": "synthetic-a", "type": "entry", "playthrough_id": "run-1",
+                      "id": answer["id"]}
+        plan = {"id": "plan-1", "text": "Try a shielded rehearsal if damage is the blocker.",
+                "status": "proposed", "reasoning_status": "untested_deduction",
+                "depends_on": [fact_ref, answer_ref], "recorded_at": player["updated_at"]}
+        player.update(questions=questions, plans=[plan])
+
+        retained = check_snapshot(documents)[self.run_one]
+        self.assertEqual(retained["questions"], questions)
+        self.assertIn(answer, retained["entries"])
+        self.assertEqual(answer["kind"], "reported")
+        self.assertEqual(retained["plans"], [plan])
+
+        cross_run = deepcopy(documents)
+        cross_run[self.run_one]["plans"][0]["depends_on"][1]["playthrough_id"] = "run-2"
+        with self.assertRaisesRegex(ContractError, "cross-playthrough"):
+            check_snapshot(cross_run)
+
+        research_with_run_context = deepcopy(documents)
+        research_with_run_context[self.mechanics]["findings"][-1]["derived_from"].append(answer_ref)
+        with self.assertRaisesRegex(ContractError, "research"):
+            check_snapshot(research_with_run_context)
+
+
+    def test_refreshed_workspace(self):
+        documents = validate_workspace(ROOT / "tests/fixtures/workspaces/game-understanding/refreshed")
+        original = documents[self.run_one]
+        newer = documents[self.game + "playthroughs/run-2.json"]
+        self.assertEqual((original["context"]["patch"], newer["context"]["patch"]), ("test-1", "test-2"))
+        premise, = documents[self.mechanics]["findings"]
+        _, connection = documents[self.overview]["findings"]
+        for finding in (premise, connection):
+            self.assertEqual(finding["status"], "supported")
+            self.assertEqual(finding["applicability"]["patches"], ["test-1"])
+        self.assertIn(premise["id"], {ref["id"] for ref in connection["derived_from"]})
+        plan, = newer["plans"]
+        self.assertEqual(plan["status"], "needs_review")
+        self.assertEqual([(ref["topic_id"], ref["id"]) for ref in plan["depends_on"]],
+                         [("overview", connection["id"])])
+        self.assertEqual(original["plans"], [])
+        self.assertNotEqual(original["entries"], newer["entries"])
+        self.assertNotEqual(original["preferences"], newer["preferences"])
+        self.assertNotEqual(original["questions"], newer["questions"])
+
+    def test_lasting_restrictions_are_optional_scoped_string_lists(self):
+        documents = fixture_documents("resumption", "valid")
+        workspace = ".cid/workspace.json"
+        game = self.game + "game.json"
+        documents[workspace]["research_restrictions"] = ["Never research puzzle solutions."]
+        documents[game]["research_restrictions"] = ["Do not research hidden routes in this game."]
+        retained = check_snapshot(documents)
+        self.assertEqual(retained, documents)
+        for owner in (workspace, game):
+            for invalid in ("no puzzles", [""], [False], {}):
+                broken = deepcopy(documents)
+                broken[owner]["research_restrictions"] = invalid
+                with self.subTest(owner=owner, invalid=invalid), self.assertRaises(ContractError):
+                    check_snapshot(broken)
+            cleared = deepcopy(documents)
+            cleared[owner]["research_restrictions"] = []
+            self.assertEqual(check_snapshot(cleared), cleared)
+            del cleared[owner]["research_restrictions"]
+            self.assertEqual(check_snapshot(cleared), cleared)
+
+    def test_supported_overview_requires_supported_premises(self):
+        for status in ("needs_review", "disputed", "superseded"):
+            documents = fixture_documents("game-understanding", "connected")
+            documents[self.mechanics]["findings"][0]["status"] = status
+            with self.subTest(status=status):
+                with self.assertRaisesRegex(ContractError, "supported deduction needs supported premises"):
+                    check_snapshot(documents)
+                for historical_status in ("needs_review", "disputed", "superseded"):
+                    documents[self.overview]["findings"][1]["status"] = historical_status
+                    retained = check_snapshot(documents)
+                    self.assertEqual(retained[self.mechanics]["findings"][0]["status"], status)
+                    self.assertEqual(retained[self.overview]["findings"][1]["status"], historical_status)
+
+    def test_conflicting_premise_retains_provenance_and_dependent_review_states(self):
+        documents = fixture_documents("game-understanding", "connected")
+        conflict = fixture_documents("research", "conflicting")
+        source_path = self.game + "sources.json"
+        documents[source_path]["sources"].append(conflict[source_path]["sources"][1])
+
+        mechanics = documents[self.mechanics]["findings"]
+        prior = deepcopy(mechanics[0])
+        prior.update(id="prior-shield", status="superseded")
+        mechanics[0]["status"] = "disputed"
+        mechanics.extend([conflict[self.mechanics]["findings"][1], prior])
+        loop, overview_claim = documents[self.overview]["findings"]
+        overview_claim["status"] = "needs_review"
+        player = documents[self.run_one]
+        resume = fixture_documents("resumption", "valid")[self.run_one]
+        player["preferences"] = deepcopy(resume["preferences"])
+        player["plans"] = [{
+            "id": "plan-shield", "text": "Review shield advice against the conflicting trial rules.",
+            "status": "needs_review", "reasoning_status": "untested_deduction",
+            "depends_on": [{"game_id": "synthetic-a", "type": "finding",
+                            "topic_id": "overview", "id": overview_claim["id"]}],
+            "recorded_at": player["updated_at"],
+        }]
+
+        retained = check_snapshot(documents)
+        shield, conflicting_shield, superseded = retained[self.mechanics]["findings"]
+        self.assertEqual((shield["status"], conflicting_shield["status"]), ("disputed", "disputed"))
+        self.assertEqual(shield["applicability"]["patches"], conflicting_shield["applicability"]["patches"])
+        self.assertEqual(superseded, prior)
+        self.assertEqual(superseded["evidence"], shield["evidence"])
+        self.assertEqual(retained[self.overview]["findings"], [loop, overview_claim])
+        self.assertEqual(loop["status"], "supported")
+        self.assertEqual(overview_claim["status"], "needs_review")
+        retained_run = retained[self.run_one]
+        self.assertEqual(retained_run["plans"], player["plans"])
+        self.assertEqual(retained_run["preferences"], resume["preferences"])
+        self.assertEqual(retained_run["entries"], player["entries"])
+
+        missing_file = deepcopy(documents)
+        del missing_file[self.overview]
+        with self.assertRaisesRegex(ContractError, "unreadable.*overview"):
+            check_snapshot(missing_file)
+
+        unpublished = deepcopy(documents)
+        unpublished[self.game + "game.json"]["topics"].remove("overview")
+        with self.assertRaisesRegex(ContractError, "dangling"):
+            check_snapshot(unpublished)
+
+
+    def test_partial_workspace(self):
+        documents = validate_workspace(ROOT / "tests/fixtures/workspaces/game-understanding/partial")
+        self.assertNotIn(self.overview, documents)
+        self.assertEqual(documents[self.mechanics]["findings"], [])
+        source, = documents[self.game + "sources.json"]["sources"]
+        self.assertEqual(source["access_status"], "failed")
+        self.assertIsNotNone(source["last_attempt_at"])
+        self.assertIsNone(source["last_success_at"])
+        questions = documents[self.run_one]["questions"]
+        self.assertEqual({q["id"]: q["status"] for q in questions},
+                         {"trial-feedback": "open", "checkpoint-progress": "open"})
+
+    def test_partial_coverage_and_lasting_limits_use_existing_records(self):
+        documents = fixture_documents("research", "failed-access")
+        supported = fixture_documents("player-direction", "deduction")[self.mechanics]["findings"]
+        gap_finding = deepcopy(supported[0])
+        gap_finding["applicability"]["notes"] += ". Pass-wide gap: checkpoint progression remains unknown."
+        unrelated = supported[1]
+        documents[self.mechanics]["findings"] = [gap_finding, unrelated]
+        player = documents[self.run_one]
+        player["preferences"] = deepcopy(
+            fixture_documents("spoilers", "strict-known")[self.run_one]["preferences"])
+        player["preferences"]["research_depth"] = {"value": "brief", "selected_at": player["updated_at"]}
+        questions = [{"id": "q-progress", "text": "What carries over between trials?", "status": "open"}]
+        restriction = {"id": "research-limit", "topic": "constraint", "kind": "reported",
+                       "statement": "For this run, don't look up puzzle solutions.",
+                       "status": "current", "recorded_at": player["updated_at"], "depends_on": []}
+        player["questions"] = questions
+        player["entries"].append(restriction)
+
+        retained = check_snapshot(documents)
+        self.assertNotIn(self.overview, retained)
+        self.assertEqual(retained[self.mechanics]["findings"], [gap_finding, unrelated])
+        self.assertEqual(retained[self.run_one]["questions"], questions)
+        self.assertIn(restriction, retained[self.run_one]["entries"])
+        self.assertEqual(retained[self.run_one]["preferences"], player["preferences"])
+
+        unavailable = deepcopy(documents)
+        unavailable[self.mechanics]["findings"] = []
+        source_path = self.game + "sources.json"
+        source = unavailable[source_path]["sources"][0]
+        source.update(last_success_at=None, applicability={"notes": "Unknown after failed access"})
+        retained = check_snapshot(unavailable)
+        self.assertEqual(retained[self.mechanics]["findings"], [])
+        self.assertEqual(retained[self.run_one]["questions"], questions)
+        self.assertEqual(retained[source_path]["sources"], [source])
+        self.assertEqual(source["access_status"], "failed")
+        self.assertIsNotNone(source["last_attempt_at"])
+
+        unavailable[self.mechanics]["findings"] = [
+            gap_finding | {"statement": "Checkpoint progression unknown.", "evidence": []}]
+        with self.assertRaisesRegex(ContractError, "sourced claim needs accessed evidence"):
+            check_snapshot(unavailable)
+
 
 class BoundaryTests(unittest.TestCase):
     def test_timestamps_require_full_utc_time(self):

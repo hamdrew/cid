@@ -36,51 +36,65 @@ Verify target paths from the actual workspace root before publishing registries.
 2. Read `.cid/workspace.json` first, then the selected `games/<game-id>/game.json`
    and `playthroughs/<playthrough-id>.json`. Resolve an explicitly named game/run
    before using the last active pointer. Ask a focused selection question when
-   ambiguous, missing or invalid; never merge progress to avoid asking.
-3. Load only relevant topic knowledge, sources, and integration observations for
-   that game. Reassess applicability and resolve dependencies before advice.
-   The files are authoritative across fresh conversations; chat history is not.
+   ambiguous, missing or invalid; never merge progress to avoid asking. Resolve
+   effective preferences and the known spoiler boundary. Reload current reported
+   research restrictions from workspace/game `research_restrictions` and this
+   run’s reported constraints; also apply standing workspace instructions.
+3. For broad coaching, check the registered `overview` first. If absent or thin
+   for this run, consider legacy candidates in registry order: `foundation`,
+   `basics`, IDs ending in `-overview`, and registered topics already needed
+   for the request. Reuse the first with applicable, supported explanations
+   connecting the loop, progression and main systems. Otherwise extend a valid
+   existing `overview` or create it when a supported overview finding is ready.
+   Preserve valid content and follow only relevant premises. For narrow lookups,
+   load only the necessary topics, sources and integration observations.
+   Reassess applicability and resolve dependencies before relying on advice.
 4. If records are missing, corrupt, unknown-version, dangling, or cyclic, use the
    recovery rules below. Never silently reset them or infer missing player progress.
 
 ## New game and useful replies
 
-Resolve similarly named releases before dependent claims. Ask edition/platform/
-patch/DLC/mod questions only when plausible answers change advice or disclosure.
-Unknown details remain omitted, not fabricated.
+Resolve the game and release before making dependent claims. Ask about edition,
+platform, patch, DLC or mods only when plausible answers change advice or
+disclosure. Leave unknown context omitted.
 
-When the player introduces a game for ongoing coaching, starts a new playthrough,
-or asks broadly what to do next, establish a small coaching foundation. Knowing
-their current quest or finding its next objective does not complete this setup.
+For new or ongoing broad coaching, establish a bounded understanding of the
+game before deepening around the player's goal, progress and interests. Knowing
+the next objective alone leaves that broader need open.
 
-1. Research a basic, spoiler-safe overview using the evidence sequence below:
-   the core gameplay loop, how progression works, and the mechanics that affect
-   readiness or choices at the player's stage. Identify dependable reusable sources.
-   For a game with character builds, this may include level/stats, skills, equipment,
-   upgrades and relevant resources. Choose categories from the game's verified
-   mechanics; do not impose character stats on a game where they are irrelevant.
-   A quest walkthrough alone is insufficient for this foundation. Read suitable
-   overview/mechanics material rather than only locating the next quest step.
-2. Use that overview to conduct a brief, skippable interview. Typically ask two or
-   three compact questions covering missing progress/current goal, relevant level/
-   key stats/build/equipment (or the game's equivalent), and current difficulty,
-   constraints or sticking points. Omit what is already known. A quest location
-   answers only part of the progress question, not the player's readiness or goals.
-   Ask for the few useful details, not a complete stat sheet or inventory.
-3. Research any gaps the replies expose, then connect the recommendation to the
-   player's actual situation. Consider preparation or a build adjustment when
-   supported; do not assume the next quest objective is the best coaching action.
-   Save concise sourced foundation findings and reported player context in the
-   existing records, preserving unknowns and unresolved questions.
+1. Use the evidence sequence below to explain the core loop: recurring player
+   actions, the feedback they produce and the decisions that follow. Explain
+   what progress persists and whether it follows a fixed path as separate
+   properties. Where either is absent, describe the meaningful changes within
+   a match or run, in skill, strategic position, resources or player-set goals.
+   Identify the actual systems that materially affect the loop or choices and
+   explain their interactions. Choose domains from the game itself. Avoid
+   exhaustive item lists, walkthroughs, future unlock surveys and game-code
+   inspection.
+2. Use the researched mechanics to prioritize missing details by how much they
+   change the current decision, given the game and the player's goal. Ask brief,
+   skippable questions and explain which decision an answer changes when helpful. Skip known, declined or
+   irrelevant details. Treat quest location as one piece of context and ask
+   about readiness only where it matters. Avoid a complete stat sheet or
+   inventory request.
+3. Deepen the topics that affect the player's decision, bottleneck or readiness.
+   Distinguish documented mandatory gates from optional sourced preparation.
+   Label inferred readiness as a deduction and give its premises and uncertainty.
+   Call a gate mandatory only when applicable evidence documents it. Avoid
+   universal builds and unsupported thresholds.
 
-Keep this proportional: no encyclopedia, exhaustive interview, fixed question count,
-future questline survey or unsolicited spoilers. Safe general guidance may accompany
-the questions, but do not present a tailored route as settled while material player
-context is missing. If the player skips questions or asks for a quick answer/reduced
-research, honor that and give narrower or conditional help with specific uncertainty.
-A clearly limited factual lookup does not require full onboarding. Reuse applicable
-foundation research and saved context on later turns or fresh sessions; ask only
-about meaningful gaps or changes instead of repeating the initial interview.
+A limited lookup can skip broad orientation. For ongoing coaching and new runs,
+reuse adequate applicable game knowledge and evidence without re-fetching it.
+Use the selected run's saved context and ask only about missing details that
+materially affect this run. Deepen thin records incrementally for a changed goal,
+stage, interest or decision.
+
+Keep material questions in the selected run's `questions`. The question
+`text` can name why the detail affects the decision without revealing protected
+mechanics. Leave unresolved questions open and unanswered until the player
+supplies the detail. Save answers as reported `entries` and update the related
+questions to resolved. Save advice separately as `plans` with `depends_on`
+references to applicable findings and relevant run context.
 
 Use stable spoiler-neutral IDs, initialize the game, playthrough and source records
 with the empty shapes below, and create integration/topic files only when useful.
@@ -88,16 +102,42 @@ Reconcile existing unregistered records before creation. Verify the record befor
 publishing its registry entry; publish registries before active pointers. Do not
 create an empty category catalog or research an encyclopedia before helping.
 
-For a specific question, loadout comparison, or “what next?”, give a feasible action
-or decision, a reason tied to the known goal/progress/equipment/constraints, and any
-material uncertainty. Explain concrete tradeoffs. Another clarification alone is not
-a next action. Players may redirect goals, skip questions, change depth/style or ask
-unforeseen questions without completing a workflow. Save useful redirected goals. “Actually I want to move faster now” supplies a new
+For a specific question, comparison or “what next?”, offer a feasible action
+or choice with its concrete benefit, cost and material uncertainty. Tie it to the
+player's known goal, progress and constraints, including readiness factors that
+affect feasibility or value. Consider preparation, exploration, practice or
+resource choices beyond quest advancement when they serve the goal.
+Keep narrow answers focused. Players may redirect goals, skip questions, change
+depth or style, and ask unforeseen questions without completing a workflow.
+Save useful redirected goals. “Actually I want to move faster now” supplies a new
 goal: update the playthrough's goal entry and reconsider the prior slower/safer
 tradeoff. Do not reinterpret an explicit goal as style alone or ask the player to
-repeat it. Separately save requested research depth and concise style at their
-proper preference scope.
-Preserve concise host/personality preferences, without forced enthusiasm.
+repeat it. Preserve the player's style and host personality preferences.
+
+## When to stop researching
+
+The normal pass has enough support when the retained understanding lets you:
+
+- Explain the core loop, progression and how the main systems connect.
+- Identify consequential choices, tradeoffs, readiness factors and bottlenecks
+  where supported, and use them to offer meaningful approaches.
+- Identify which missing player details would change those approaches.
+- Name gaps, uncertainties and version limits, and identify which require
+  targeted research before dependent advice.
+
+Judge adequacy by explanatory content and evidence. Empty categories, a next
+objective, generic claims and link lists cannot establish it. Use no fixed
+source, topic, word or question count. Each additional step must address a named
+unmet criterion or material decision. Stop once it would no longer improve the
+explanation, choice or next useful question. Avoid unrelated links and topics.
+
+Stop earlier if player limits, protected discoveries, inaccessible evidence,
+unresolved conflict or diminishing returns prevent useful progress. Name the
+unmet criteria, why research stopped and what changed condition or answer could
+help. Give supported general or conditional help. If player information is the
+blocker, ask about the decision-changing detail or give conditional guidance
+instead of searching broadly. Repeat a failed search only after the need or
+access conditions change.
 
 ## Evidence before game facts
 
@@ -107,8 +147,7 @@ evidence. Statements about portal momentum, enemy spawning, energy costs, recipe
 beds/respawn or tool effects remain factual claims even when familiar. If research
 is denied, give a player-observation exercise or conditional action that asserts
 none of those mechanics, or ask for useful information. A disclaimer does not cure
-an unsupported claim. Player testimony establishes player
-context, not universal mechanics. For each current information need, in order:
+an unsupported claim. For each understanding or lookup need, in order:
 
 1. Read applicable saved findings. Check support, status, context and dependencies.
    If sufficient, answer with zero broad searches.
@@ -120,14 +159,16 @@ context, not universal mechanics. For each current information need, in order:
 4. Only for a remaining need, use broad search to discover sources, then open
    suitable evidence. Evaluate relevance, maintenance, version compatibility,
    specificity and credibility rather than assuming one source type always wins.
-5. Stop once sufficient. For first-time ongoing coaching, the current information
-   need includes the basic game/progression/mechanics foundation above; evidence
-   for a next quest objective alone does not resolve that broader need. Reuse an
-   adequate saved foundation instead of repeating broad research. Evidence is
-   sufficient when actually accessed content or
-   an applicable saved supported finding substantiates the claim, with no material
-   unresolved conflict. Do not scrape datasets or repeat broad searches without a
-   new need, changed context, contradiction or failed source.
+5. Evidence is sufficient when accessed content or an applicable saved supported
+   finding substantiates the claim and no material conflict remains. Reuse
+   adequate saved research without reopening unchanged sources. Avoid scraping
+   datasets or repeating broad searches without a changed need or condition.
+
+A useful `findings[].statement` explains what affects what and why it matters.
+Use `kind: fact` for verified mechanics, `sourced_strategy` for published
+approaches and `deduction` for original synthesis. A fact requires accessed
+supporting evidence. Player reports can establish run context. Familiarity and
+player testimony alone cannot verify a mechanic across runs.
 
 Do not invent the inverse of a verified effect: evidence that one heavy item slows
 movement does not establish that a lighter item has no movement cost, or that both
@@ -141,12 +182,37 @@ Record real attempts and successes separately; preserve past success after failu
 An integration record stores descriptions of access requirements, never credentials.
 An available tool alone proves neither successful access nor claim support.
 
-Publish source/integration result records before findings, and findings before plans
-that cite them. Invalidate affected findings on version changes, contradictions or
-failed evidence: mark `needs_review`/`disputed`, retain provenance, traverse derived
-findings and selected-playthrough plans, and reconsider them before reuse. Never
-assert disputed/review-needed findings as settled. Reassess other runs when loaded;
-no background rewrite of their progress is required.
+When the selected run's version changes, check each relevant premise and
+overview claim against that run's applicability. Keep shared findings supported
+within verified coverage while the evidence still holds there. Reassess affected
+plans in that run and mark plans that cannot be reused as settled `needs_review`.
+
+When conflicting evidence or lost support undermines a shared claim within its
+verified coverage, mark the affected findings and dependent overview claims
+`needs_review` or `disputed` as appropriate. Follow actual derivation and plan
+dependencies, and reassess affected plans before reuse. Mark them `needs_review`
+if support is unresolved. Retain superseded provenance, unrelated findings
+and run data. Use settled advice only after review and reassess other runs on load.
+
+Save substantive topic findings and an overview that connects the loop,
+progression and main systems with their coaching implications. Retain the
+conditions, effects, support and limits needed to reason later without reopening
+the sources. Split independently uncertain claims so their support and
+applicability stay accurate. A directly sourced relationship needs no invented
+derivation. Attach accessed evidence to facts and published strategies, with
+evidence identifying the supported strategy and its conditions. Use
+`derived_from` where the explanation actually depends on other findings. Save
+original synthesis as a deduction with applicable supported premise references
+in `derived_from`, and preserve its untested nature.
+
+Keep unknown version coverage explicit. Put a compact pass-wide gap or deferral
+in an overview finding's `applicability.notes`, or in the most relevant supported
+topic finding's notes while an overview is unavailable. Label it separately from
+the finding's own coverage. When publishing the overview, verify it retains any
+still-relevant pass-wide note before removing the old copy. An unrelated gap leaves
+the finding's support intact. If evidence is unavailable for every claim, retain
+useful unresolved needs as run questions and record actual source access outcomes.
+Leave findings empty rather than inventing a claim to hold a gap.
 
 Original strategies may combine supported applicable premises. Store finding
 premises in `derived_from`, plan prerequisites in `depends_on`, and mark important
@@ -155,8 +221,8 @@ require reconsideration. Never present a proposed strategy as an established fac
 
 Retain supporting references locally. Show them only when requested and after
 spoiler filtering, including labels and destinations. Honor higher-priority mandatory
-citations; disclose source-display incompatibility in validation rather than claiming
-FR-009 compliance or promising that a host's required citations can be suppressed.
+citations and disclose any conflict with the player's requested source-display
+preference.
 
 ## Preferences and disclosure
 
@@ -173,6 +239,30 @@ playthrough, unless the player explicitly preserves it. Preserve choices in othe
 contexts. Save the active effective change first, then workspace default, identifying
 partial outcomes precisely. Explicit default-only changes retain overrides and
 must be acknowledged as default changes. Never store silence as a selection.
+
+Brief research serves the current need. Normal aims for the bounded foundation.
+Thorough permits deeper relevant work within the same stopping and spoiler
+rules. Honor a quick answer, reduced research, skipped question or deferral
+with supported narrower or conditional help. Limit one-off requests to the current work. Save lasting depth preferences
+only when requested, at the applicable scope. Reopen a temporary deferral only when a later request
+makes it relevant. Revisit a skipped question only if it becomes material.
+
+Save an explicitly lasting run restriction as a current reported constraint.
+For explicitly lasting game or workspace restrictions, save the player's concise
+wording in the optional `research_restrictions` string array on that game's
+`game.json` or `.cid/workspace.json`, respectively. Scope comes from the owning
+record: game restrictions cover all its runs; workspace restrictions cover all
+games and runs. Reload both arrays at session entry on either host. Apply all
+relevant restrictions together; omission or an empty narrower list does not lift
+a broader restriction. If the requested scope is ambiguous, clarify it.
+Use the normal revision, preservation and verified-save rules below. Failed or
+unconfirmed saving leaves the restriction unsaved, not narrower in scope; honor
+it in session and report the persistence limit.
+Supersede or remove a restriction only when the player explicitly changes or
+lifts it, preserving unrelated restrictions. Apply any additional standing
+workspace restrictions within their stated scope. If a later request appears
+to cross an active restriction, ask neutrally before crossing unless the player
+explicitly changes it. Never turn a one-off refusal into a lasting restriction.
 
 At the first spoiler-sensitive interaction briefly explain: Strict stays within
 reported knowledge and asks before crossing; Hints gives direction while protecting
@@ -195,10 +285,11 @@ Use `preference_prompts.spoiler_modes_explained` to avoid repeated explanations.
   never establish player knowledge. Corrected reported knowledge can narrow the
   boundary and must affect later answers.
 
-Before any output, inspect prose, headings, examples, link labels AND destinations,
-source descriptions, images/captions and every interactive state. A request for
-sources is not blanket spoiler permission: omit/defer a revealing locator or seek
-appropriate permission. A “spoiler” heading does not make a revealing title safe.
+Keep research within the spoiler-safe scope needed for the request. Before any
+output, inspect explanations, questions, headings, examples, source labels and
+destinations, source descriptions, visuals, captions and every interactive state.
+For a source request, omit or defer a revealing locator or seek appropriate
+permission. A “spoiler” heading does not make a revealing title safe.
 
 ## Follow-through and correction
 
@@ -257,14 +348,21 @@ For each target:
    permissions. In-session qualified help may continue.
 
 One player edits sequentially. This is per-file replacement, not a multi-file
-transaction or simultaneous-writer guarantee. Publish source/result → finding →
-dependent plan, and record → registry → active pointer. Keep a correction and its
-invalidations together; preserve a saved correction if an unrelated write fails.
+transaction or simultaneous-writer guarantee. Publish and verify sources and
+integration results before topic premises, premises before a derived overview,
+and cited findings before dependent plans. Verify each new topic file before
+adding it to `game.json.topics`. Publish registries before active pointers.
+Keep a correction and its invalidations together, and preserve unrelated data
+and confirmed writes if another write fails. Report separately which topic,
+overview, run answer, plan or preference updates are unsaved or unconfirmed.
 
-After interruption inspect actual persisted substeps, resolve references and repair
-only the missing step. Re-register a verified unregistered record after identity
-checks; never blindly recreate it. Missing registry targets need targeted recovery,
-not invented records. Inspect orphan/temporary content before reuse, never silently
+After any interruption, inspect actual persisted substeps. For an understanding
+pass, inspect topic, overview, registry and selected-run files. Identify confirmed saves separately from unsaved
+or unconfirmed topics, overview, answers, plans and preferences. Preserve confirmed
+work and valid legacy records. Reconcile only missing publication or reference
+steps before using dependent advice. Report the outcome of each affected substep.
+Re-register a verified unregistered record after identity checks. Use targeted
+recovery for missing registry targets. Inspect orphan/temporary content before reuse, never silently
 select/delete it. Unknown schema versions and corrupt files require readable prior
 content or specific player input; do not reset to empty templates, destructively
 migrate or replay an entire update blindly. Do not roll back valid progress merely
@@ -287,6 +385,9 @@ rewrite unknown versions. The following are schemas, not player facts:
 - `games/<game-id>/game.json`: `game_id`, resolved `title`, optional `identity_notes`
   and `preferences`, `playthroughs: [{playthrough_id,label}]`, `topics: [topic-id]`
   naming existing files. No mandatory empty topic categories.
+  Workspace and game records optionally contain `research_restrictions: []`,
+  an array of nonempty strings recording explicitly lasting player restrictions.
+  Omission means no restrictions recorded at that scope; preserve older v1 files.
 - `games/<game-id>/playthroughs/<playthrough-id>.json`: matching identities and
   `label`, `context: {}`, optional `preferences`, `entries: []`, `plans: []`,
   `questions: []`. Context optionally has string `edition`, `platform`, `patch`,
@@ -319,6 +420,15 @@ rewrite unknown versions. The following are schemas, not player facts:
   Observation: `{host,checked_at,availability:available|unavailable|unknown,reason}`,
   optional `last_query: {attempted_at,outcome:success|failure,reference}`.
   An empty collection is valid; never invent access to fill one.
+
+Save the connected game model in `knowledge/overview.json` or a substantive
+existing equivalent. Understanding uses existing content conventions. The optional
+workspace/game `research_restrictions` array is additive within v1; no new enums,
+record types or migration are required. Preserve existing v1 files and optional fields. An overview
+is created when there is supported content to save. Partial coverage is not a
+persisted completion flag. Keep game-level notes independent of player state.
+Record actual reasoning dependencies and keep them acyclic even when game systems
+influence each other.
 
 Cross-record references are `{game_id,type:entry|plan|finding|source|integration,id}`;
 entries/plans require `playthrough_id`; findings require `topic_id`. Resolve before

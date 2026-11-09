@@ -8,7 +8,9 @@ its additional content without duplicating or changing the completed contract.
 
 ## Game understanding in existing v1 records
 
-This planned expansion adds content conventions, not fields, enums or record types.
+Understanding reuses existing content conventions. Lasting broader restrictions add
+one optional v1 field, `research_restrictions`, to workspace and game records;
+no new enums or record types are needed.
 Existing files remain valid; no migration, reset or mandatory empty overview is needed.
 
 | Output | Existing representation |
@@ -21,6 +23,7 @@ Existing files remain valid; no migration, reset or mandatory empty overview is 
 | Gaps and pass limits | Relevant `applicability.notes`, with a compact pass-wide note on an overview finding or, while the overview is missing, the most relevant supported topic finding |
 | Material player questions | Selected playthrough's `questions`; explanatory `text` can name why the detail affects the decision without revealing protected mechanics |
 | Answers and advice | Reported `entries` and separate `plans` referencing supported findings and relevant run context |
+| Explicitly lasting game/workspace research restriction | Optional `research_restrictions` array of nonempty strings on `game.json` or `.cid/workspace.json`. The owning record determines scope. Both hosts reload all applicable scopes; omission/empty list at a narrower scope never cancels broader restrictions. Change only on explicit request using verified saves. |
 | Explicitly lasting run research restriction | Current reported constraint in that run's `entries`. Supersede or retract it when the player changes or lifts the restriction. |
 
 The overview is a content role, not a second source of truth. Several findings may

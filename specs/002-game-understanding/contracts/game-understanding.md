@@ -1,6 +1,6 @@
 # Bounded game understanding contract
 
-**Design date**: 2026-11-08 · **Requirements**: FR-001–FR-015 of [this feature](../spec.md) · **Implementation status**: planned
+**Design date**: 2026-11-08 · **Requirements**: FR-001–FR-015 of [this feature](../spec.md) · **Implementation status**: implemented in the shared policy
 
 This feature extends the [baseline conversational interface](../../001-ai-game-coach/contracts/coaching.md). The pass is an internal
 research workflow invoked through ordinary coaching requests, not a new command,
@@ -25,9 +25,15 @@ When a later request makes a temporary deferral relevant again, research just th
 need within the effective preferences. A player can explicitly set a lasting
 restriction, such as “for this run, don't look up puzzle solutions.” Save a run
 restriction as a reported constraint and reload it with that run. Apply any
-broader standing restriction stated in the player's workspace instructions within
-its stated scope. If a broader topic restriction has no standing record, honor
-it in the current conversation and disclose that it is currently conversation-only.
+broader standing restriction within its stated scope. Save explicitly lasting
+game/workspace restrictions in the optional `research_restrictions` string array
+on `game.json`/`.cid/workspace.json`, respectively. Scope is determined by the
+owning record. Both hosts load workspace and game restrictions alongside the
+run's reported constraints. Apply all relevant restrictions together; an absent
+or empty narrower list does not lift broader restrictions. Change or lift them
+only on explicit player request, clarifying ambiguous scope. Use the existing
+revision and verified-save rules; failed saving is reported as unsaved and does
+not narrow the requested scope. No policy file edit or record migration is needed.
 If a later request appears to conflict with an active restriction, ask neutrally
 before crossing it unless the player explicitly changes it. A skipped player
 question stays unanswered until the player supplies the detail. Continue conditional

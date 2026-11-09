@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-a",
+  "topic_id": "mechanics",
+  "findings": [
+    {
+      "id": "finding-1",
+      "statement": "SYNTHETIC: a shield reduces trial damage",
+      "kind": "fact",
+      "status": "supported",
+      "applicability": {
+        "notes": "SYNTHETIC test-1 rules only; other coverage unknown",
+        "patches": [
+          "test-1"
+        ]
+      },
+      "evidence": [
+        {
+          "source_id": "source-1",
+          "locator": "fixture://evidence/rules.md",
+          "accessed_at": "2026-11-08T00:00:00Z",
+          "summary": "Synthetic rules state a shield reduces damage"
+        }
+      ],
+      "spoiler": {
+        "sensitive": false
+      },
+      "checked_at": "2026-11-08T00:00:00Z"
+    },
+    {
+      "id": "finding-2",
+      "statement": "SYNTHETIC: a heavy shield slows movement",
+      "kind": "fact",
+      "status": "supported",
+      "applicability": {
+        "notes": "SYNTHETIC test-1 rules only; other coverage unknown",
+        "patches": [
+          "test-1"
+        ]
+      },
+      "evidence": [
+        {
+          "source_id": "source-1",
+          "locator": "fixture://evidence/rules.md",
+          "accessed_at": "2026-11-08T00:00:00Z",
+          "summary": "Synthetic rules state the heavy shield slows movement"
+        }
+      ],
+      "spoiler": {
+        "sensitive": false
+      },
+      "checked_at": "2026-11-08T00:00:00Z"
+    },
+    {
+      "id": "practice-1",
+      "statement": "SYNTHETIC: the practice guide suggests a shielded rehearsal if trial damage is the problem. Rehearsal takes an extra attempt.",
+      "kind": "sourced_strategy",
+      "status": "supported",
+      "applicability": {
+        "notes": "SYNTHETIC test-1 rules only; other coverage unknown",
+        "patches": [
+          "test-1"
+        ]
+      },
+      "evidence": [
+        {
+          "source_id": "source-practice",
+          "locator": "fixture://evidence/practice.md",
+          "accessed_at": "2026-11-08T00:00:00Z",
+          "summary": "The synthetic guide recommends a shielded practice attempt when damage prevents clearing the route."
+        }
+      ],
+      "spoiler": {
+        "sensitive": false
+      },
+      "checked_at": "2026-11-08T00:00:00Z"
+    }
+  ]
+}

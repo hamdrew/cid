@@ -47,11 +47,11 @@ Say something like “Help me with [game]. My goal is [goal].” Share whatever 
 is useful. You can skip questions, ask for less research or change direction.
 No special start, save or closing commands are required.
 
-For ongoing coaching in a new game, expect a little basic research about gameplay,
-progression and relevant mechanics, followed by a short interview about your
-progress, goals, relevant stats/build/equipment and what is giving you trouble.
-Naming your current quest should not make Cid skip that foundation and just send
-you to the next objective. Known details are reused; questions remain skippable.
+For ongoing coaching in a new game, Cid researches how play repeats, how
+progress works and how the main systems affect your choices. It uses those
+mechanics to ask brief, skippable questions about details that could change the
+advice. A current quest gives Cid context for that broader work. Cid saves
+supported explanations and a connected overview for later conversations.
 
 If the host cannot read the policy, check that you started at the workspace root.
 Codex overrides or Claude instruction exclusions can prevent loading; Claude's
@@ -69,6 +69,12 @@ existing settings and permissions rather than bypassing them.
 - **Preferences:** choices apply across the workspace unless you name a game/run
   scope. An unscoped change takes effect in the current run too; other runs retain
   their explicit choices. You can request a default-only change.
+- **Research:** ask for a quick answer, defer a topic, or skip a question at any
+  time. Cid can give narrower or conditional help and explain gaps when evidence
+  is limited. A fresh conversation reuses applicable saved knowledge and run
+  context. You can request a lasting depth preference or a research restriction
+  for a run, game or the whole workspace. Lasting game/workspace restrictions
+  are saved in workspace/game JSON records; run restrictions stay with that run.
 - **Records:** meaningful updates are saved during the conversation. Failed or
   unconfirmed saves should be identified. Start a fresh conversation whenever you like.
 
@@ -122,14 +128,17 @@ the empty workspace template over existing records.
 For updates, compare/merge the new `coaching/COACH.md` into the installed copy,
 preserving deliberate local changes. If the bootstrap changed, merge those loading
 lines too. Keep workspace identity, preferences and everything under `games/`.
-There is no automatic synchronization. Never reset corrupt or unknown-version
-records to an empty template; preserve readable content and ask for targeted help.
+Cid can reuse an existing overview or extend useful older knowledge in place.
+Existing records stay in JSON v1. There is no automatic synchronization. Preserve
+readable content and ask for targeted help with corrupt or unknown-version records.
 
 ## Development reference
 
 The [data model](specs/001-ai-game-coach/data-model.md) and
 [contracts](specs/001-ai-game-coach/contracts/workspace.md) describe record details.
-The [specification](specs/001-ai-game-coach/spec.md) describes intended behavior.
+The [baseline specification](specs/001-ai-game-coach/spec.md) describes the shared
+coach. The [game understanding contract](specs/002-game-understanding/contracts/game-understanding.md)
+covers the bounded research pass and reuse.
 
 The model-free local contract suite uses Python 3.11+ and no pip/npm dependencies:
 
