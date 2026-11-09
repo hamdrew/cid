@@ -247,6 +247,11 @@ def validate_document(kind, d):
                 string(e["locator"])
                 stamp(e["accessed_at"])
                 string(e["summary"])
+                if "page_title" in e or "revision_id" in e:
+                    fields(e, "page_title revision_id")
+                    string(e["page_title"])
+                    require(type(e["revision_id"]) is int and e["revision_id"] > 0, "revision_id must be a positive integer")
+                    require("integration_id" not in e, "wiki evidence is not integration evidence")
                 if "integration_id" in e:
                     ident(e["integration_id"])
                     fields(e, "query")
@@ -278,6 +283,30 @@ def validate_document(kind, d):
                 require(s["last_attempt_at"] is not None and datetime.fromisoformat(s["last_success_at"].replace("Z", "+00:00")) <= datetime.fromisoformat(s["last_attempt_at"].replace("Z", "+00:00")), "success after last attempt")
             if "integration_id" in s:
                 ident(s["integration_id"])
+            if "mediawiki" in s:
+                m = s["mediawiki"]
+                require(isinstance(m, dict), "mediawiki must be an object")
+                require(bool(m.keys() & {"api", "robots", "last_failure"}), "mediawiki must record api, robots or last_failure")
+                if "api" in m:  # absent means not yet probed
+                    api = m["api"]
+                    require(api is None or (isinstance(api, str) and api.startswith("https://") and api.endswith("/api.php")),
+                            "mediawiki api must be null or an https URL ending in /api.php")
+                if "robots" in m:
+                    fields(m["robots"], "checked_at status")
+                    stamp(m["robots"]["checked_at"])
+                    choice(m["robots"]["status"], "allowed disallowed unreadable absent")
+                if "last_failure" in m:
+                    fields(m["last_failure"], "at kind detail")
+                    stamp(m["last_failure"]["at"])
+                    choice(m["last_failure"]["kind"], "no_api challenged blocked sign_in_required rate_limited lagged robots_disallowed error")
+                    string(m["last_failure"]["detail"])
+                    failure = datetime.fromisoformat(m["last_failure"]["at"].replace("Z", "+00:00"))
+                    require(s["access_status"] != "accessible", "accessible source keeps a stale last_failure")
+                    require(s["last_attempt_at"] is not None and failure <= datetime.fromisoformat(s["last_attempt_at"].replace("Z", "+00:00")), "failure after last attempt")
+                    if s["last_success_at"] is not None:
+                        require(failure >= datetime.fromisoformat(s["last_success_at"].replace("Z", "+00:00")), "failure predates last success")
+                    if m["last_failure"]["kind"] == "sign_in_required":
+                        require(s["access_status"] == "requires_access", "sign-in failure needs requires_access")
     elif kind == "integrations":
         fields(d, "integrations")
         unique(d["integrations"], "id")
@@ -371,6 +400,12 @@ def validate_workspace(root):
                 source = nodes[source_key]
                 require(source["last_success_at"] is not None, "discovery is not accessed evidence")
                 require(datetime.fromisoformat(e["accessed_at"].replace("Z", "+00:00")) <= datetime.fromisoformat(source["last_success_at"].replace("Z", "+00:00")), "evidence access after recorded success")
+                m = source.get("mediawiki", {})
+                if (m.get("last_failure", {}).get("kind") == "robots_disallowed"
+                        and m.get("robots", {}).get("status") == "disallowed"
+                        and "checked_at" in m.get("robots", {})):
+                    require(datetime.fromisoformat(e["accessed_at"].replace("Z", "+00:00")) <= datetime.fromisoformat(m["robots"]["checked_at"].replace("Z", "+00:00")),
+                            "evidence accessed after robots disallow")
                 if "integration_id" in source:
                     fields(e, "integration_id query")
                 if "integration_id" in e:
@@ -443,7 +478,7 @@ class CommonContractTests(unittest.TestCase):
 
 class ResearchContractTests(unittest.TestCase):
     def test_complete_research_fixtures(self):
-        for name in ("supported", "indexed-only", "conflicting", "patch-mismatch", "failed-access", "available-integration", "unavailable-integration", "deduction"):
+        for name in ("supported", "indexed-only", "conflicting", "patch-mismatch", "failed-access", "available-integration", "unavailable-integration", "deduction", "wiki-api", "wiki-api-failed"):
             with self.subTest(name=name):
                 validate_workspace(ROOT / "tests/fixtures/workspaces/research" / name)
 
@@ -930,6 +965,146 @@ class ReviewRegressionTests(unittest.TestCase):
         d["sources"][0]["last_success_at"] = "2026-11-08T00:00:00.123Z"
         with self.assertRaisesRegex(ContractError, "after"):
             validate_document("sources", d)
+
+class MediaWikiContractTests(unittest.TestCase):
+    """Optional additive v1 fields for wiki research through the MediaWiki API."""
+
+    SOURCES = "games/synthetic-a/sources.json"
+    KNOWLEDGE = "games/synthetic-a/knowledge/mechanics.json"
+
+    def wiki_documents(self):
+        documents = deepcopy(fixture_documents("research", "supported"))
+        source = documents[self.SOURCES]["sources"][0]
+        source["mediawiki"] = {"api": "https://wiki.example.invalid/api.php",
+                               "robots": {"checked_at": "2026-11-08T00:00:00Z", "status": "unreadable"}}
+        evidence = documents[self.KNOWLEDGE]["findings"][0]["evidence"][0]
+        evidence["page_title"] = "Synthetic Page"
+        evidence["revision_id"] = 1073
+        return documents
+
+    def source(self, documents):
+        return documents[self.SOURCES]["sources"][0]
+
+    def evidence(self, documents):
+        return documents[self.KNOWLEDGE]["findings"][0]["evidence"][0]
+
+    def test_records_without_new_fields_stay_valid(self):
+        check_snapshot(fixture_documents("research", "supported"))
+
+    def test_wiki_fields_validate(self):
+        check_snapshot(self.wiki_documents())
+        documents = self.wiki_documents()
+        self.source(documents)["mediawiki"]["api"] = None
+        check_snapshot(documents)
+
+    def test_recovery_after_robots_disallow_validates(self):
+        documents = self.wiki_documents()
+        source = self.source(documents)
+        source.update(last_attempt_at="2026-11-08T10:00:00Z", last_success_at="2026-11-08T10:00:00Z")
+        source["mediawiki"]["robots"] = {"checked_at": "2026-11-08T09:00:00Z", "status": "allowed"}
+        self.evidence(documents)["accessed_at"] = "2026-11-08T10:00:00Z"
+        check_snapshot(documents)
+
+    def test_robots_disallow_before_probe_validates(self):
+        documents = self.wiki_documents()
+        source = self.source(documents)
+        source.update(access_status="failed", last_attempt_at="2026-11-08T12:00:00Z")
+        source["mediawiki"] = {
+            "robots": {"checked_at": "2026-11-08T12:00:00Z", "status": "disallowed"},
+            "last_failure": {"at": "2026-11-08T12:00:00Z", "kind": "robots_disallowed", "detail": "synthetic disallow"}}
+        check_snapshot(documents)
+
+    def test_wiki_fixtures_record_revisions_for_reuse(self):
+        for name in ("wiki-api", "wiki-api-failed"):
+            documents = fixture_documents("research", name)
+            wiki_sources = {s["id"] for s in documents[self.SOURCES]["sources"]
+                            if s.get("mediawiki", {}).get("api")}
+            cited = [e for f in documents[self.KNOWLEDGE]["findings"] for e in f["evidence"]
+                     if e["source_id"] in wiki_sources]
+            with self.subTest(fixture=name):
+                self.assertTrue(cited, "fixture has no wiki evidence")
+                for e in cited:
+                    self.assertIn("page_title", e)
+                    self.assertIn("revision_id", e)
+
+    def test_invalid_wiki_fields_are_rejected(self):
+        def robots_status(d):
+            self.source(d)["mediawiki"]["robots"]["status"] = "maybe"
+
+        def failure_kind(d):
+            self.source(d)["mediawiki"]["last_failure"] = {
+                "at": "2026-11-08T00:00:00Z", "kind": "throttled", "detail": "synthetic"}
+
+        def http_api(d):
+            self.source(d)["mediawiki"]["api"] = "http://wiki.example.invalid/api.php"
+
+        def non_api_path(d):
+            self.source(d)["mediawiki"]["api"] = "https://wiki.example.invalid/index.php"
+
+        def revision_without_title(d):
+            del self.evidence(d)["page_title"]
+
+        def title_without_revision(d):
+            del self.evidence(d)["revision_id"]
+
+        def empty_mediawiki(d):
+            self.source(d)["mediawiki"] = {}
+
+        def accessible_with_failure(d):
+            self.source(d)["mediawiki"]["last_failure"] = {
+                "at": "2026-11-08T00:00:00Z", "kind": "error", "detail": "synthetic"}
+
+        def failure_after_attempt(d):
+            source = self.source(d)
+            source["access_status"] = "failed"
+            source["mediawiki"]["last_failure"] = {
+                "at": "2026-11-08T01:00:00Z", "kind": "error", "detail": "synthetic"}
+
+        def failure_before_success(d):
+            source = self.source(d)
+            source.update(access_status="failed", last_attempt_at="2026-11-08T12:00:00Z",
+                          last_success_at="2026-11-08T10:00:00Z")
+            source["mediawiki"]["last_failure"] = {
+                "at": "2026-11-08T09:00:00Z", "kind": "error", "detail": "synthetic"}
+
+        def sign_in_not_requires_access(d):
+            source = self.source(d)
+            source["access_status"] = "failed"
+            source["mediawiki"]["last_failure"] = {
+                "at": "2026-11-08T00:00:00Z", "kind": "sign_in_required", "detail": "synthetic"}
+
+        def empty_title(d):
+            self.evidence(d)["page_title"] = ""
+
+        def with_integration(d):
+            e = self.evidence(d)
+            e["integration_id"] = "integration-1"
+            e["query"] = {"attempted_at": "2026-11-08T00:00:00Z", "outcome": "success", "reference": "synthetic"}
+
+        def after_robots_disallow(d):
+            source = self.source(d)
+            source.update(access_status="failed", last_attempt_at="2026-11-08T12:00:00Z",
+                          last_success_at="2026-11-08T10:00:00Z")
+            source["mediawiki"]["robots"] = {"checked_at": "2026-11-08T09:00:00Z", "status": "disallowed"}
+            source["mediawiki"]["last_failure"] = {
+                "at": "2026-11-08T12:00:00Z", "kind": "robots_disallowed", "detail": "synthetic disallow"}
+            self.evidence(d)["accessed_at"] = "2026-11-08T10:00:00Z"
+
+        mutations = [robots_status, failure_kind, http_api, non_api_path, revision_without_title,
+                     title_without_revision, empty_title, empty_mediawiki, with_integration,
+                     accessible_with_failure, failure_after_attempt, failure_before_success,
+                     sign_in_not_requires_access, after_robots_disallow]
+        for bad in (0, -1, True, "12"):
+            def bad_revision(d, bad=bad):
+                self.evidence(d)["revision_id"] = bad
+            bad_revision.__name__ = "revision_id=" + repr(bad)
+            mutations.append(bad_revision)
+        for mutate in mutations:
+            documents = self.wiki_documents()
+            mutate(documents)
+            with self.subTest(mutation=mutate.__name__), self.assertRaises(ContractError):
+                check_snapshot(documents)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -75,6 +75,14 @@ existing settings and permissions rather than bypassing them.
   context. You can request a lasting depth preference or a research restriction
   for a run, game or the whole workspace. Lasting game/workspace restrictions
   are saved in workspace/game JSON records; run restrictions stay with that run.
+- **Wikis:** when a MediaWiki wiki (Fandom and others) shows a browser challenge,
+  Cid can read it through the wiki's official API instead of asking you to paste
+  text. It reads only what a question needs, anonymously and one request at a
+  time, respects robots rules, saves its own summaries with page links, and says
+  plainly when a wiki cannot be read. Nothing needs installing or configuring. If
+  the host's shell has no network access (Codex's default sandbox often blocks
+  it), Cid uses its fetch tool or other sources; you may approve the host's usual
+  network prompt.
 - **Records:** meaningful updates are saved during the conversation. Failed or
   unconfirmed saves should be identified. Start a fresh conversation whenever you like.
 

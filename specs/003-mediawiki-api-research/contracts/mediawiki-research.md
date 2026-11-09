@@ -11,9 +11,10 @@ step 4 for a newly discovered one. It does not change the order of steps 1–5. 
    consulted, **and**
 2. a relevant wiki is known or discovered whose ordinary page fetch returned a
    browser challenge, sign-in wall or other unreadable response, **or** an
-   indexed wiki source already has a working `mediawiki.api`.
+   indexed wiki source already has a saved non-null `mediawiki.api` not stopped
+   this session.
 
-An indexed wiki with a working `mediawiki.api` is consulted through it in step 2,
+An indexed wiki with a saved non-null `mediawiki.api`, not stopped this session, is consulted through it in step 2,
 before any broad search. A wiki first found in step 4 uses this path once its
 ordinary pages prove unreadable. When an ordinary page fetch works without any
 workaround, Cid MAY keep using it. Non-wiki research is unchanged.
@@ -22,8 +23,8 @@ workaround, Cid MAY keep using it. Non-wiki research is unchanged.
 
 | Step | Outcome → action |
 | --- | --- |
-| Robots file | Applicable tokens: `*`, `Cid-game-coach`, and the host's user-initiated tokens (Claude Code: `Claude-User`, `Claude-Web`; Codex: `ChatGPT-User`, `Codex`). Training and search-indexing tokens do not apply. Read the whole file and merge every group for the same agent token, including repeated `*` groups. Within a group, the longest matching rule wins. If any applicable token is disallowed for the API path, or `ai-input=no` → do not use; record `robots_disallowed`; tell the player. Unreadable, absent or allowed → continue |
-| Endpoint | Saved `mediawiki.api` → use it. Saved `api: null` → do not re-probe unless conditions changed (fresh pass, player request, new address); fall back. Otherwise probe `/api.php`, then `/w/api.php` with `meta=siteinfo`. Neither is MediaWiki JSON → record `no_api`; fall back |
+| Robots file | Applicable tokens: `*`, `Cid-game-coach`, and the host's user-initiated tokens (Claude Code: `Claude-User`, `Claude-Web`; Codex: `ChatGPT-User`, `Codex`). Training and search-indexing tokens do not apply. Read the whole file and merge every group for the same agent token, including repeated `*` groups. Within a group, the longest matching rule wins. Evaluate the saved endpoint's path, or before probing each candidate path (skip a disallowed candidate). If every remaining API path is disallowed for an applicable token, or `ai-input=no` → do not use; record `robots_disallowed`; tell the player. Unreadable, absent or allowed → continue |
+| Endpoint | Saved `mediawiki.api` → use it. Saved `api: null` → do not re-probe unless conditions changed (fresh pass, player request, new address); fall back. Otherwise probe `/api.php`, then `/w/api.php` with `meta=siteinfo`. Only a 404 or non-MediaWiki JSON on `/api.php` moves to `/w/api.php`; a challenge, 401/403, lag or rate limit during probing follows the response table and leaves `api` unsaved. Neither candidate is MediaWiki (or both missing) → record `no_api`; fall back. Build reader addresses from `server` (prefix `https:` if protocol-relative) + `articlepath` |
 
 The robots check and endpoint probes are per-session setup for a wiki and do not
 count toward the per-need request budget below.
@@ -42,15 +43,16 @@ count toward the per-need request budget below.
 | Response | Action |
 | --- | --- |
 | JSON success | Use it |
-| `error.code` `maxlag` | Record `lagged` (not `rate_limited`). Stop, retry and session rules are as in the next row |
-| `error.code` `ratelimited`, HTTP 429 or 503, or any other response with `Retry-After` | Record `rate_limited`. Stop for this need. A later need may retry **once** after ≥ `Retry-After` (default 5 s) has elapsed since the recorded failure. A second lag or rate-limit response ends the wiki for the session |
+| Error code (`error.code`, or `errors[].code` with non-`bc` `errorformat`) `maxlag` | Record `lagged` (not `rate_limited`). Stop, retry and session rules are as in the next row |
+| Error code `ratelimited`, HTTP 429 or 503, or any other response with `Retry-After` | Record `rate_limited`. Stop for this need. A later need may retry **once** after ≥ `Retry-After` (default 5 s) has elapsed since the recorded failure. A second lag or rate-limit response ends the wiki for the session |
 | Challenge page or other HTML instead of JSON | Stop the wiki for the session. Record `challenged`. **No other route is tried** |
-| HTTP 401, `error.code` `readapidenied`, or an `assert` failure | Stop the wiki for the session. Record `sign_in_required`; set `access_status` `requires_access`. **No other route is tried** |
-| HTTP 403 without a challenge page, or `error.code` `blocked` (or another `*blocked` code) | Stop the wiki for the session. Record `blocked`. **No other route is tried** |
+| HTTP 401, error code `readapidenied`, or an `assert` failure (`assertanonfailed`) | Stop the wiki for the session. Record `sign_in_required`; set `access_status` `requires_access`. **No other route is tried** |
+| HTTP 403 without a challenge page, or error code `blocked` (or another `*blocked` code) | Stop the wiki for the session. Record `blocked`. **No other route is tried** |
 | Other error or timeout | Record `error`. Fall back for this need |
 
-A later successful read sets `access_status` `accessible`, updates
-`last_success_at` and removes `mediawiki.last_failure`.
+A failure sets `access_status` `failed`, except `sign_in_required`, which sets
+`requires_access`. A later successful read sets `access_status` `accessible`,
+updates `last_success_at` and removes `mediawiki.last_failure`.
 
 Every stop or failure is told to the player in the same reply in plain words,
 such as "the wiki's API asked me to slow down" or "the wiki blocked automated

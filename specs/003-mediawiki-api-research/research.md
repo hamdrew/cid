@@ -50,7 +50,10 @@ and `maxlag=5`. No AI tooling was launched to test behaviour.
   `action=query&meta=siteinfo&siprop=general|rightsinfo`. Accept an endpoint only
   if it returns JSON with `query.general.generator` starting with "MediaWiki". Use
   `articlepath`/`server` to build reader addresses and `rightsinfo` to note the
-  licence. Save the working endpoint so later sessions skip the probe. Save
+  licence. Prefix `https:` to a protocol-relative `server`. Only a 404 or a
+  non-MediaWiki JSON answer on the first candidate moves to the second; a
+  challenge, 401/403, lag or rate limit during probing is handled as in R3 and
+  leaves the endpoint unsaved. Save the working endpoint so later sessions skip the probe. Save
   `api: null` when neither answers, and do not re-probe in later sessions unless
   conditions change (fresh pass, player request, new address). An independent
   wiki serving its API elsewhere is therefore treated as having no usable API.
@@ -65,7 +68,8 @@ and `maxlag=5`. No AI tooling was launched to test behaviour.
 - **Decision**: Every API request carries `format=json&formatversion=2&maxlag=5&assert=anon&errorformat=plaintext`.
   Cid makes requests strictly one at a time and batches titles where the API
   allows it (`prop=info` takes up to 50). Treat as **lag or rate-limit**: an
-  `error.code` of `maxlag` or `ratelimited` (both can arrive with HTTP 200), HTTP
+  error code (`error.code`, or `errors[].code` when `errorformat` is not `bc`, as
+  with the `plaintext` Cid sends) of `maxlag` or `ratelimited` (both can arrive with HTTP 200), HTTP
   429 or 503, or any `Retry-After`. On that, stop for the current need. A later
   need may retry once, after at least `Retry-After` seconds (5 if none was given)
   have passed since the recorded failure. A second such response ends use of that

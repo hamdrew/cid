@@ -12,6 +12,18 @@ test (constitution, development workflow).
 
 ## 1. Deterministic checks (model-free)
 
+**Baseline (T001, 2026-11-08)**: `python3 -m unittest discover -s tests -p 'test_*.py' -v`
+on the unchanged suite with Python 3.15.2: 39 tests, all passed, no pre-existing
+failures. This is model-free evidence of record-contract validity only, not an
+observation of coaching behaviour.
+
+**After implementation (T022, 2026-11-08)**: the same command ran 45 tests, all
+passed (after code-review fixes). That is the 39 existing tests plus 6 in `MediaWikiContractTests`, and
+`wiki-api` and `wiki-api-failed` now appear in `test_complete_research_fixtures`.
+This establishes record shape and fixture validity only. Whether Cid actually
+reads wikis politely, reports failures honestly and reuses revisions stays
+unobserved until ordinary use.
+
 ```sh
 python3 -m unittest tests/test_contracts.py
 ```

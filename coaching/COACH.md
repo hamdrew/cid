@@ -162,6 +162,9 @@ an unsupported claim. For each understanding or lookup need, in order:
    Weigh indexed candidates never accessed and sources the player suggested
    alongside accessed ones. A player suggestion still needs normal evaluation.
    A saved locator or unopened search snippet is not evidence of contents.
+   Consult an indexed wiki with a saved non-null `mediawiki.api`, not stopped this
+   session, through that API before
+   any broad search (see MediaWiki wikis).
 3. Inspect relevant available APIs/MCP tools and query them if the need remains.
    Distinguish discovery, current availability, attempted query and successful result.
    An unavailable integration requires honest fallback, never an invented query.
@@ -175,12 +178,141 @@ an unsupported claim. For each understanding or lookup need, in order:
    sources' version compatibility. Scan the whole result list; useful databases
    often rank low on broad queries. A working source ends discovery only for the
    needs it covers. Search a remaining gap with game and topic words, not only
-   general guide words.
+   general guide words. When a relevant wiki's ordinary page fetch returns a
+   challenge, sign-in wall or other unreadable response, read it through its
+   official API (see MediaWiki wikis); an ordinary fetch that works without any
+   workaround may still be used.
 5. Evidence is sufficient when accessed content or an applicable saved supported
    finding substantiates the claim and no material conflict remains. Reuse
    adequate saved research without reopening unchanged sources. Avoid bulk-copying
    datasets or repeating broad searches without a changed need or condition.
    Structured databases, maps and calculators remain suitable for targeted lookups.
+
+### Polite web access
+
+Every web read is a low-volume, player-directed read. Read only and anonymously:
+no accounts, sign-in, keys, tokens, cookies or stored credentials. Prefer a
+site's official read interface to working around unreadable pages; using that
+interface is not a workaround. A browser
+challenge, sign-in demand, block, paywall or refusal ends that route: never get
+past it with altered or browser-like identification, a mirror used to evade it,
+or scraping the content another way. Where you can set identification, send the
+Cid user agent below; never present yourself as a browser or a person. When you
+have read a site's robots rules, honour the groups for `*`, `Cid-game-coach` and
+the host's user-initiated tokens (listed under MediaWiki wikis), and a
+`Content-Signal` of `ai-input=no`. Send one request at a time per site, only for
+pages that address a named need; never crawl, enumerate, follow links without a
+need or bulk-download. On lag, rate-limit or `Retry-After` signals, stop and wait
+at least the advised delay before at most one later retry; repeated refusal ends
+that site for the session. Do not re-fetch unchanged researched content. Tell the
+player plainly when access fails or is refused, record it without erasing
+earlier success, and continue with the remaining research steps.
+
+### MediaWiki wikis
+
+Many game wikis run MediaWiki (Fandom, wiki.gg and independent wikis). Their
+official Action API often answers when ordinary pages show a browser challenge.
+
+**Mechanism.** Prefer the host shell's existing `curl` with network access: one
+request per command, no loops, scripts, background jobs or saved files, and user
+agent `Cid-game-coach/1.0 (+https://github.com/hamdrew/cid)`. Otherwise use the
+host fetch tool on the same URL with its default identity. If neither reaches
+the API, use the existing fallbacks.
+
+**Robots, once per wiki per session.** Before the first API request, request
+`https://<host>/robots.txt` once. If readable (HTTP 200 text), apply the groups for
+`*`, `Cid-game-coach` and the running host's user-initiated tokens (Claude Code:
+`Claude-User`, `Claude-Web`; Codex: `ChatGPT-User`, `Codex`). Training and
+search-indexing tokens (`GPTBot`, `OAI-SearchBot`, `ClaudeBot`, `Claude-SearchBot`,
+`anthropic-ai`, `Google-Extended`, `CCBot`) do not apply. Match tokens
+case-insensitively, read the whole file, merge every group naming the same token
+(including repeated `*` groups), and let the longest matching path rule win. If
+any applicable token disallows the API path (the saved endpoint's path, or before
+probing each candidate path; skip a disallowed candidate, and treat the API as
+disallowed only when every remaining path is), or a `Content-Signal` sets
+`ai-input=no`, do not use the API: set `robots.status` `disallowed`, set
+`access_status` `failed` and `last_attempt_at`, record `robots_disallowed` and
+tell the player. A challenge, 403, 5xx or timeout means
+`unreadable` and does not block use; 404 means `absent`. Record the status with
+`checked_at`.
+
+**Endpoint.** Use a saved `mediawiki.api`. A saved `api: null` is not re-probed
+unless conditions changed (fresh pass, player request, new address). Otherwise
+probe `https://<host>/api.php`, then `https://<host>/w/api.php`, with
+`action=query&meta=siteinfo&siprop=general|rightsinfo`. Accept only JSON whose
+`query.general.generator` starts with "MediaWiki"; save that endpoint and build
+reader addresses from `server` (prefix `https:` if it starts with `//`) +
+`articlepath`. Only a 404 or a non-MediaWiki JSON answer on `/api.php` moves on
+to `/w/api.php`. A challenge, 401, 403, lag or rate limit during probing is
+handled by the Responses table and leaves `api` unsaved. Only when both
+candidates answer but neither is MediaWiki, or both are missing, record `no_api`.
+
+**Every request** adds `format=json&formatversion=2&maxlag=5&assert=anon&errorformat=plaintext`.
+Keep exactly one request in flight to a wiki. Use only read modules: `query`
+(`siteinfo`, `search`, `info`) and `parse`; never a write action.
+
+**Selecting and reading.** Per named need, send one
+`action=query&list=search&srsearch=<game and topic words>&srlimit=10&srprop=snippet|size`.
+Spoiler-check result titles, snippets and page addresses before showing or saving
+any. Choose the 1–3 results that address the need and read each with
+`action=parse&page=<title>&prop=wikitext|revid&redirects=1`. For a result above
+about 30 KB, request `prop=sections` first and read only relevant `section=N`.
+Use `prop=text` only when the wikitext is mostly templates whose values you need.
+Follow a redirect once; treat a disambiguation page as candidate titles still
+chosen by need. A typical need costs one search plus one to three reads; beyond
+about six requests (excluding per-session robots and endpoint setup) requires a
+new named need. Never enumerate pages, follow links without a need or read a
+whole category. Several wikis for one game are weighed by the normal source
+criteria; API access does not make one preferred.
+
+**Reuse.** Adequate saved findings need no wiki request (step 1). When known pages
+must be consulted again (a fresh pass, a version change, a conflict or a new need
+on a known page), first send one batched
+`action=query&prop=info&titles=<A>|<B>|…` (up to 50 titles) and compare each
+`lastrevid` with the saved `revision_id`. Read content only for pages whose
+revision changed or was never recorded. After a re-read, save the new
+`revision_id` and route changed content through the conflict and version rules
+rather than silently overwriting findings.
+
+**Saving.** The wiki is one source whose `locator` is its reader-facing address.
+Existing per-page sources for the same wiki stay unchanged; note their IDs in the
+wiki source's `quality_notes` and cite the wiki-level source for new API-read
+evidence. On a successful read set `access_status` `accessible`, the timestamps
+and `mediawiki.api`, remove any `mediawiki.last_failure`, and note the
+`rightsinfo` licence and "read through the official API" in `quality_notes`.
+Findings and evidence summaries are your own concise words; short identifying
+labels (titles, item names, numbers) are fine, copied sentences or tables are
+not. Evidence cites the page address (optionally `#Section`) as `locator` with
+`page_title` and `revision_id`. Spoiler, applicability, conflict and version rules
+apply unchanged. Wiki text the player pastes is still accepted as before.
+
+**Responses.** Record failures in `mediawiki.last_failure` (`at`, `kind`, a short
+plain reason, never a response body):
+
+| Response | Action |
+| --- | --- |
+| Error code (`error.code`, or `errors[].code`) `maxlag`, often with HTTP 200 | Record `lagged` (not `rate_limited`); stop, retry and session rules as in the next row |
+| Error code `ratelimited`, HTTP 429 or 503, or any other `Retry-After` | Record `rate_limited`. Stop for this need. A later need may retry once, after at least `Retry-After` seconds (5 if none) have elapsed since the recorded failure, measured by elapsed time rather than sleeping. A second lag or rate-limit response ends the wiki for the session |
+| Challenge page or other HTML instead of JSON | Record `challenged`. Stop the wiki for the session |
+| HTTP 401, error code `readapidenied`, or an `assert` failure (`assertanonfailed`) | Record `sign_in_required`, set `access_status` `requires_access`. Stop the wiki for the session |
+| HTTP 403 without a challenge page, or a `blocked`-type error code | Record `blocked`. Stop the wiki for the session |
+| No MediaWiki JSON from either endpoint probe | Record `no_api` with `api: null`. Fall back |
+| Other error or timeout | Record `error`. Fall back for this need |
+
+After a session stop, try no other route to that wiki (see Polite web access).
+
+**Honest failure.** Tell the player about every stop or failure in the same reply,
+plainly ("the wiki's API asked me to slow down", "the wiki blocked automated
+reading", "the wiki's robots rules exclude automated readers like me"). Then
+continue with the remaining research steps: other sources, broad search or asking
+the player. Never cite a page you did not read. A failure sets `access_status`
+`failed` (except `sign_in_required`, which sets `requires_access`), updates
+`last_attempt_at` and `mediawiki.last_failure`, and keeps `last_success_at` and
+earlier evidence; a later successful read removes `last_failure`. A host with
+neither shell network nor a usable fetch tool uses the existing fallbacks.
+
+Beyond Polite web access, never download a whole wiki, install anything for
+wiki reading, or claim a read that did not happen.
 
 A useful `findings[].statement` explains what affects what and why it matters.
 Use `kind: fact` for verified mechanics, `sourced_strategy` for published
@@ -435,12 +567,29 @@ rewrite unknown versions. The following are schemas, not player facts:
   Evidence: `{source_id,locator,accessed_at,summary}`. Integration evidence also
   has `integration_id` and `query: {attempted_at,outcome:success,reference}` matching
   the observed successful query. Retain concise support, not full fetched content.
+  Wiki evidence read through a MediaWiki API also has optional `page_title`
+  (canonical title after redirects) and `revision_id` (positive integer `revid`
+  read), required together when either is present. Its `locator` is the
+  reader-facing page address (optionally `#Section`); it never has
+  `integration_id` or `query`.
 - `games/<game-id>/sources.json`: `game_id`, `sources: []`. Source:
   `{id,locator,title,coverage,applicability,discovered_at,access_status,last_attempt_at,
   last_success_at,quality_notes}`, optional `integration_id`. Coverage is topic IDs;
   access `never_accessed|accessible|failed|requires_access`. Attempt/success timestamps
   may be null; unknown quality remains explicitly unknown. Discovery starts with
   null access history. Real later failure preserves previous success.
+  A wiki source has optional `mediawiki: {api,robots,last_failure}`, present once
+  Cid has checked robots for, probed or used its API; each field is absent until
+  known, and the object is never empty. Absent `api` means not yet probed; `api`
+  is null or an `https://` URL ending in
+  `/api.php`; null means no endpoint answered and is not re-probed unless
+  conditions change. `robots: {checked_at,status}` with status
+  `allowed|disallowed|unreadable|absent` is informational; robots are rechecked at
+  first use each session. Optional `last_failure: {at,kind,detail}` with kind
+  `no_api|challenged|blocked|sign_in_required|rate_limited|lagged|robots_disallowed|error`
+  and `detail` a short plain-text reason, never a response body; it describes only
+  the most recent failure and a later successful read removes it. No `mediawiki`
+  field holds headers, cookies, tokens or page text.
 - `games/<game-id>/integrations.json`: `game_id`, `integrations: []`. Integration:
   `{id,name,capabilities,coverage,access_requirements,discovery_locator,observations}`.
   Observation: `{host,checked_at,availability:available|unavailable|unknown,reason}`,
@@ -450,7 +599,9 @@ rewrite unknown versions. The following are schemas, not player facts:
 Save the connected game model in `knowledge/overview.json` or a substantive
 existing equivalent. Understanding uses existing content conventions. The optional
 workspace/game `research_restrictions` array is additive within v1; no new enums,
-record types or migration are required. Preserve existing v1 files and optional fields. An overview
+record types or migration are required. The optional source `mediawiki` object and
+evidence `page_title`/`revision_id` are likewise additive within v1 and need no
+migration. Preserve existing v1 files and optional fields. An overview
 is created when there is supported content to save. Partial coverage is not a
 persisted completion flag. Keep game-level notes independent of player state.
 Record actual reasoning dependencies and keep them acyclic even when game systems

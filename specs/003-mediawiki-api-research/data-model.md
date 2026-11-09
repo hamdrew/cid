@@ -17,19 +17,23 @@ The record is an existing source. The wiki as a whole is one source.
 | `access_status` | Existing enum. `accessible` after a successful API read. `failed` after no API, a rate limit, a challenge or a block. `requires_access` when the API demands sign-in. Robots disallow is recorded as `failed` with that kind |
 | `last_attempt_at` / `last_success_at` | Existing semantics. A later failure never clears an earlier success |
 | `quality_notes` | Existing evaluation notes plus the licence from `rightsinfo` (e.g. "Licence: CC BY-SA") |
-| **`mediawiki`** *(new, optional)* | Present only when Cid has probed or used the API |
+| **`mediawiki`** *(new, optional)* | Present once Cid has checked robots for, probed or used the API. Never empty; each field is absent until known |
 
 ### `mediawiki` object
 
 | Field | Type | Rule |
 | --- | --- | --- |
-| `api` | string or null | Verified endpoint URL (`…/api.php` or `…/w/api.php`). `null` when no endpoint answered as MediaWiki |
+| `api` | string or null, optional | Verified endpoint URL (`…/api.php` or `…/w/api.php`). `null` when no endpoint answered as MediaWiki. Absent when not yet probed (e.g. robots disallowed first) |
 | `robots` | `{checked_at, status}` | `status` ∈ `allowed` \| `disallowed` \| `unreadable` \| `absent`. It is informational: Cid rechecks at first use in each session |
 | `last_failure` | object, optional | `{at, kind, detail}`. `kind` ∈ `no_api` \| `challenged` \| `blocked` \| `sign_in_required` \| `rate_limited` \| `lagged` \| `robots_disallowed` \| `error`. `detail` is a short plain-text reason, never a response body. It describes the most recent failure only: a later successful API read removes it, and the earlier success is kept in `last_success_at` |
 
 Validation (when `mediawiki` is present):
 
-- `api` is null or an `https://` URL ending in `/api.php`.
+- The object records at least one of `api`, `robots`, `last_failure`.
+- `api`, when present, is null or an `https://` URL ending in `/api.php`.
+- With `last_failure`: `access_status` is not `accessible`; `last_failure.at` is
+  no later than `last_attempt_at` and no earlier than `last_success_at` (when set);
+  `sign_in_required` requires `access_status` `requires_access`.
 - `robots.checked_at` and `last_failure.at` are UTC stamps. The enums are as listed.
 - A source with `last_failure.kind` of `robots_disallowed` and `robots.status`
   of `disallowed` must not be cited by evidence accessed after `robots.checked_at`.

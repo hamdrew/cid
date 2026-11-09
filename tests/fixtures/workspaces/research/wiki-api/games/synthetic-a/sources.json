@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "updated_at": "2026-11-08T00:00:00Z",
+  "game_id": "synthetic-a",
+  "sources": [
+    {
+      "id": "wiki-1",
+      "locator": "https://wiki.example.invalid/wiki/",
+      "title": "Synthetic Wiki (MediaWiki)",
+      "coverage": [
+        "mechanics"
+      ],
+      "applicability": {
+        "notes": "SYNTHETIC test-1 rules only; other coverage unknown",
+        "patches": [
+          "test-1"
+        ]
+      },
+      "discovered_at": "2026-11-08T00:00:00Z",
+      "access_status": "accessible",
+      "last_attempt_at": "2026-11-08T10:00:00Z",
+      "last_success_at": "2026-11-08T10:00:00Z",
+      "quality_notes": "Relevance: shield mechanics; maintenance: synthetic community wiki; version: test-1; specificity: page-level; credibility: controlled fixture. Licence: CC BY-SA. Read through the official API.",
+      "mediawiki": {
+        "api": "https://wiki.example.invalid/api.php",
+        "robots": {
+          "checked_at": "2026-11-08T09:59:00Z",
+          "status": "unreadable"
+        }
+      }
+    }
+  ]
+}
