@@ -578,6 +578,10 @@ rewrite unknown versions. The following are schemas, not player facts:
   access `never_accessed|accessible|failed|requires_access`. Attempt/success timestamps
   may be null; unknown quality remains explicitly unknown. Discovery starts with
   null access history. Real later failure preserves previous success.
+  A successful access is also an attempt: set `last_attempt_at` with
+  `last_success_at`, never earlier. If a loaded source has `last_success_at` later
+  than `last_attempt_at`, set `last_attempt_at` to `last_success_at` when next
+  saving that file and mention the repair.
   A wiki source has optional `mediawiki: {api,robots,last_failure}`, present once
   Cid has checked robots for, probed or used its API; each field is absent until
   known, and the object is never empty. Absent `api` means not yet probed; `api`
