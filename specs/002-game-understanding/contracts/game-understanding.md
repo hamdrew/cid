@@ -44,7 +44,16 @@ help and revisit it only when material.
 1. Resolve identity and relevant version ambiguity, selected run, effective
    preferences and known spoiler boundary. Read applicable knowledge, indexed
    sources and available integrations in the established evidence order before
-   broad search. Do not re-fetch sufficient unchanged saved evidence.
+   broad search. Do not re-fetch sufficient unchanged saved evidence, except
+   that a player-requested fresh pass rechecks saved research while preserving
+   records. Weigh indexed never-accessed candidates and player-suggested sources
+   too; a suggestion still gets normal evaluation and is indexed for the game.
+   For a broad pass on a new game, or a fresh pass, map the source landscape once
+   within research restrictions (wiki, database or interactive map, official
+   news, not only guide queries); a version change rechecks official news and
+   indexed sources instead. Index promising unopened results as `never_accessed`
+   candidates using only existing topic IDs. Structured databases remain
+   suitable for targeted lookups; only bulk copying is avoided.
 2. Read suitable overview/mechanics material to understand the core gameplay loop,
    overall progression and major systems. Explain how the systems affect each
    other and meaningful choices. Activities, skills, equipment, crafting, resources
@@ -90,7 +99,11 @@ This is not encyclopedic completeness: unneeded specifics can remain deferred.
 Each additional research step must address a named unmet criterion or material
 decision; stop once additional coverage would not improve the explanation, choice
 or next useful question. Do not follow newly discovered links into unrelated
-branches. Stop earlier when a player limit, protected boundary, inaccessible evidence,
+branches. A gap leaving an adequacy criterion unmet, or one the request asked
+to verify, stays unmet until a targeted search for it has been tried (and noted
+if unsuccessful) or a stop condition applies; a working source ends discovery
+only for the needs it covers. Stop earlier when a player limit, protected
+boundary, inaccessible evidence,
 unresolved conflict or diminishing useful returns prevents useful further research.
 Retain a partial model and its specific limits when a material criterion remains
 unmet. If player information is the blocker, ask or give supported

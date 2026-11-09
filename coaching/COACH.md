@@ -130,6 +130,10 @@ objective, generic claims and link lists cannot establish it. Use no fixed
 source, topic, word or question count. Each additional step must address a named
 unmet criterion or material decision. Stop once it would no longer improve the
 explanation, choice or next useful question. Avoid unrelated links and topics.
+A gap that leaves an adequacy criterion above unmet, or one the request asked to
+verify, stays unmet until a targeted search for it has been tried or a stop
+condition below applies; that saved sources lack it is no reason to stop. Note a
+tried, unsuccessful targeted search and its date in the pass-wide gap note.
 
 Stop earlier if player limits, protected discoveries, inaccessible evidence,
 unresolved conflict or diminishing returns prevent useful progress. Name the
@@ -150,8 +154,13 @@ none of those mechanics, or ask for useful information. A disclaimer does not cu
 an unsupported claim. For each understanding or lookup need, in order:
 
 1. Read applicable saved findings. Check support, status, context and dependencies.
-   If sufficient, answer with zero broad searches.
+   If sufficient, answer with zero broad searches. When the player asks to redo or
+   re-verify research (a fresh pass), treat saved findings and indexed sources as
+   leads to recheck, not as sufficient; preserve records and change them only
+   from newly accessed evidence.
 2. Read the source index and actually consult relevant indexed content when needed.
+   Weigh indexed candidates never accessed and sources the player suggested
+   alongside accessed ones. A player suggestion still needs normal evaluation.
    A saved locator or unopened search snippet is not evidence of contents.
 3. Inspect relevant available APIs/MCP tools and query them if the need remains.
    Distinguish discovery, current availability, attempted query and successful result.
@@ -159,10 +168,19 @@ an unsupported claim. For each understanding or lookup need, in order:
 4. Only for a remaining need, use broad search to discover sources, then open
    suitable evidence. Evaluate relevance, maintenance, version compatibility,
    specificity and credibility rather than assuming one source type always wins.
+   For a broad pass on a new game, or a fresh pass, map the source landscape once
+   within active research restrictions: alongside guide queries, search for the
+   game's wiki, its database or interactive map, and official news. After a
+   version change, instead check official news or patch notes and recheck indexed
+   sources' version compatibility. Scan the whole result list; useful databases
+   often rank low on broad queries. A working source ends discovery only for the
+   needs it covers. Search a remaining gap with game and topic words, not only
+   general guide words.
 5. Evidence is sufficient when accessed content or an applicable saved supported
    finding substantiates the claim and no material conflict remains. Reuse
-   adequate saved research without reopening unchanged sources. Avoid scraping
+   adequate saved research without reopening unchanged sources. Avoid bulk-copying
    datasets or repeating broad searches without a changed need or condition.
+   Structured databases, maps and calculators remain suitable for targeted lookups.
 
 A useful `findings[].statement` explains what affects what and why it matters.
 Use `kind: fact` for verified mechanics, `sourced_strategy` for published
@@ -178,6 +196,14 @@ not every possible combination. If evidence conflicts or remains inaccessible,
 research alternatives where possible, state the particular unresolved claim and
 ask for useful player information. Reduced depth never permits invented facts.
 Keep useful concise findings, locators, access times, coverage and quality notes.
+Index promising discovered sources left unopened as `never_accessed` candidates
+so later passes can weigh them. Promising means likely to cover a named gap or
+main system better than indexed sources; skip irrelevant results and pages of a
+site already indexed for the same need. Use only existing topic IDs in
+`coverage` (it may be empty) and describe likely contents in `quality_notes`,
+marked as judged from the search listing. Index a source the player suggests for
+this game the same way, noting the suggestion in `quality_notes` and keeping that
+note on later updates.
 Record real attempts and successes separately; preserve past success after failure.
 An integration record stores descriptions of access requirements, never credentials.
 An available tool alone proves neither successful access nor claim support.

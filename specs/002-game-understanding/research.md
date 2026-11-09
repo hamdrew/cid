@@ -97,3 +97,25 @@ The following decisions resolve all technical unknowns for this expansion.
   v1 and survive record validation. They cannot prove that prose is substantive or
   coaching is informed. Optional ordinary-use feedback remains the behavioral evidence;
   no AI sessions, model APIs, simulation agents or graders may be launched for tests.
+
+### 6. Source discovery beyond the first working source
+
+- **Decision**: A broad pass on a new game, or a player-requested fresh pass, maps
+  the source landscape once (wiki, database or interactive map, official news)
+  within research restrictions; a version change rechecks official news and
+  indexed sources. A working source ends discovery only for the needs it covers.
+  A gap leaving an adequacy criterion unmet gets a targeted game-and-topic search
+  before the pass stops, and an unsuccessful attempt is noted in the pass-wide gap
+  note. Promising unopened results and player-suggested sources are indexed as
+  `never_accessed` candidates with existing topic IDs only. Databases serve
+  targeted lookups; only bulk copying is avoided.
+- **Rationale**: Ordinary use (2026-11-08, RuneScape: Dragonwilds refresh) missed a
+  third-party database covering gaps the pass itself named. Only broad guide and
+  patch queries ran; the database ranked low and only for topic queries. Once the
+  wiki worked no further search ran, and unopened results were not indexed, so later
+  passes saw only the sources already used. This fills the constitution's existing
+  "index discovered sources by coverage" expectation without schema change.
+- **Alternatives considered**: An independent research backlog (rejected in decision
+  2) is avoided by bounding candidates to named gaps or main systems. Fixed query or
+  source counts conflict with decision 4. A list of preferred sources for the whole
+  workspace would need a new field; per-game indexing in v1 suffices for now.
