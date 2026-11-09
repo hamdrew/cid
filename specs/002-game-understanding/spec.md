@@ -111,6 +111,7 @@ conflicting findings receive further research.
 4. **Given** a changed version or conflicting evidence, **When** affected knowledge
    is reused, **Then** Cid revisits its applicability and dependent overview/advice,
    retains provenance and preserves unaffected knowledge and player records.
+   A finding still supported for another run's version remains reusable there.
 
 ---
 
@@ -133,6 +134,8 @@ Observe narrower supported help and explicit limits, without an enforced full pa
 2. **Given** a quick-answer request, reduced research preference or skipped question,
    **When** Cid responds, **Then** it honors that limit and gives narrower or
    conditional guidance without guessing or requiring setup completion.
+   A later request for more depth can reopen a temporary deferral. An explicitly
+   lasting restriction remains in effect within its stated scope until changed.
 3. **Given** inaccessible evidence, unresolved conflict or an uncertain spoiler
    boundary, **When** full understanding cannot be established productively,
    **Then** Cid retains partial knowledge and explicit gaps, and asks a useful
@@ -153,8 +156,8 @@ Observe narrower supported help and explicit limits, without an enforced full pa
   access limitations without inventing mechanics to fill a knowledge record.
 - Known mechanics but unknown player readiness: ask or give conditional help,
   rather than continue broad searches while waiting for player information.
-- A one-off quick request does not by itself change a lasting preference or permit
-  silently resuming declined research on the next turn.
+- A one-off quick request does not change a lasting preference. Resume deferred
+  research only when it serves a later request, within any standing limits.
 - Failed or unconfirmed saving identifies the specific unpersisted knowledge or
   player update; existing valid records must not be reset to make setup succeed.
 - Later discoveries, source labels and questions can themselves spoil content;
@@ -171,8 +174,8 @@ Observe narrower supported help and explicit limits, without an enforced full pa
   The core loop means the recurring player actions, feedback and decisions that
   sustain play. Progression can mean changing match/run state, skill, strategic
   position, resources or player-defined goals; it need not mean quests, levels or
-  permanent unlocks. If there is no persistent or linear progression, explain that
-  limit and the meaningful changes within play instead of inventing a progression path.
+  permanent unlocks. Describe what persists and whether there is a fixed path
+  separately. If either is absent, explain the meaningful changes within play.
 - **FR-003**: Cid MUST identify the actual game's major systems and explain their
   consequential relationships. Activities, skills, equipment, crafting, resources
   and exploration are examples, not mandatory categories or an RPG checklist.
@@ -203,27 +206,32 @@ Observe narrower supported help and explicit limits, without an enforced full pa
 - **FR-009**: Cid MUST retain explicit knowledge gaps, uncertainties, version limits
   and useful deferred needs, plus material unanswered player questions. Unknown
   mechanics MUST NOT be promoted to verified facts.
-- **FR-010**: The normal pass MUST stop when Cid can explain the main systems and
-  relationships, identify relevant player-context questions and recognize what needs
-  targeted research. It MUST stop earlier for a player limit or unproductive,
-  inaccessible, conflicting or protected evidence, retaining partial coverage honestly.
+- **FR-010**: The normal pass MUST stop when Cid can explain the loop, progression
+  and main system relationships, identify consequential choices, tradeoffs, readiness
+  factors and bottlenecks where supported, and identify material player questions
+  and gaps needing targeted research. It MUST stop earlier if a player limit or
+  unavailable, conflicting, protected or unproductive evidence prevents useful further
+  research. Retain partial coverage explicitly when an unmet material criterion remains.
 - **FR-011**: The pass MUST NOT become an exhaustive encyclopedia, full website
   mirror or inspection of game code. Further research MUST address a material
   remaining understanding need or relevant decision rather than unrelated branches.
 - **FR-012**: Cid MUST honor quick answers, reduced research, skipped questions and
   redirection, continuing supported narrower or conditional help. Reduced depth
   MUST NOT permit invented facts, and deferred research MUST NOT become mandatory.
-  A one-off limit applies to the current work; persist a lasting preference only
-  when requested, using the existing scope rules. A later goal, stage, run or
-  question can make a deferred gap relevant again, but does not cancel an explicit
-  refusal or lasting limit. Ask neutrally before resuming explicitly declined work;
-  otherwise research only the newly relevant need within the effective preferences.
+  An ordinary quick request, deferral or refusal limits the current work. A later
+  request can make that gap relevant again without another confirmation. Cid MUST
+  carry forward a research restriction only when the player explicitly makes it
+  lasting, and apply it within the player's stated scope. If a later request appears
+  to conflict with that restriction, ask neutrally before crossing it unless the
+  player explicitly changes it. Persist lasting depth preferences only on request,
+  using the existing scope rules.
 - **FR-013**: Cid MUST reuse and incrementally deepen applicable saved understanding
   across conversations and runs, without repeatedly fetching adequate unchanged
   sources or repeating answered questions. Game knowledge and run state MUST stay distinct.
 - **FR-014**: Version changes or evidence conflicts MUST trigger reassessment of
   affected findings, overview dependencies and advice before reuse, retaining
-  provenance and preserving unaffected records.
+  provenance and preserving unaffected records. A run's version change MUST NOT
+  downgrade shared findings that remain supported within their verified coverage.
 - **FR-015**: This expansion MUST preserve existing workspace records, preferences,
   spoiler protections, evidence-selection order, correctable assumptions and save/
   recovery behavior. Missing or failed research/saves MUST remain explicit limits,

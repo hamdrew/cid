@@ -15,17 +15,23 @@ prior quest answer is not proof of adequate understanding. A new run reuses game
 research while collecting its own context.
 
 A limited lookup, “quick answer,” “less research,” “skip that” or “later” narrows
-the present work. Do not insist on the full pass or silently resume declined work.
+the present work. Continue with supported help within that limit.
 Persist a lasting research preference only when requested, at the proper scope;
-a one-off quick request need not change `research_depth`. Brief uses the current
+a one-off quick request leaves `research_depth` as it was. Brief uses the current
 need, normal aims for the bounded foundation, and thorough permits deeper relevant
 research while retaining the same stopping and spoiler rules.
 
-A new goal, stage, run or material question can make deferred knowledge relevant
-again. Reassess that need within the effective preferences rather than restarting
-the whole pass. Relevance alone does not override a refusal: ask neutrally before
-resuming explicitly declined research. A skipped player question is not permission
-to infer its answer; continue conditional help and revisit it only when material.
+When a later request makes a temporary deferral relevant again, research just that
+need within the effective preferences. A player can explicitly set a lasting
+restriction, such as “for this run, don't look up puzzle solutions.” Save a run
+restriction as a reported constraint and reload it with that run. Apply any
+broader standing restriction stated in the player's workspace instructions within
+its stated scope. If a broader topic restriction has no standing record, honor
+it in the current conversation and disclose that it is currently conversation-only.
+If a later request appears to conflict with an active restriction, ask neutrally
+before crossing it unless the player explicitly changes it. A skipped player
+question stays unanswered until the player supplies the detail. Continue conditional
+help and revisit it only when material.
 
 ## Research and coaching behavior
 
@@ -39,11 +45,11 @@ to infer its answer; continue conditional help and revisit it only when material
    or exploration are possible domains only when the actual game supports them.
    Avoid exhaustive item lists, walkthroughs, later unlock surveys or game-code inspection.
    The core loop is the recurring actions, feedback and decisions sustaining play.
-   For games without linear or persistent progression, explain changes within a
-   match/run, skill, strategic position, resources or player-defined goals as
-   applicable, and explicitly note the absence of persistent progression. Major
-   systems are mechanics that materially affect that loop or the player's choices,
-   not a required set of genre categories.
+   Explain what persists and whether progress follows a fixed path as separate
+   properties. If either is absent, describe the meaningful changes in match/run
+   state, skill, strategic position, resources or player-defined goals, as
+   applicable. Major systems are the mechanics that materially affect the loop or
+   the player's choices.
 3. Identify important decisions, tradeoffs, readiness factors and common bottlenecks
    from supported mechanics/strategies. Distinguish a documented requirement from
    a suggested preparation strategy; do not invent thresholds or universal builds.
@@ -78,9 +84,10 @@ This is not encyclopedic completeness: unneeded specifics can remain deferred.
 Each additional research step must address a named unmet criterion or material
 decision; stop once additional coverage would not improve the explanation, choice
 or next useful question. Do not follow newly discovered links into unrelated
-branches. Stop earlier at a player limit, protected boundary, inaccessible evidence,
-unresolved conflict or diminishing useful returns; retain a partial model and its
-specific limits. If player information is the blocker, ask or give supported
+branches. Stop earlier when a player limit, protected boundary, inaccessible evidence,
+unresolved conflict or diminishing useful returns prevents useful further research.
+Retain a partial model and its specific limits when a material criterion remains
+unmet. If player information is the blocker, ask or give supported
 conditional help rather than continue general searching. Do not repeat failed
 searches without a changed need or access condition.
 
@@ -104,8 +111,11 @@ opening the original pages again. Keep source links, access context and applicab
 
 Verified mechanics use `fact`; published advice uses `sourced_strategy`; original
 synthesis uses `deduction` and `derived_from`. A supported deduction remains a
-deduction. Retain coverage gaps/deferred areas in applicability notes; absent
-coverage is unknown, not universal. Save selected-run questions and player answers
+deduction. Retain coverage gaps and deferred areas in applicability notes. If
+there is a supported topic finding but no supported overview finding, put the
+pass-wide gap in the most relevant topic finding's notes as a separate coverage
+note. Move any still-relevant pass-wide gap to the overview when it is saved.
+Absent coverage remains unknown. Save selected-run questions and player answers
 separately from game knowledge. Never create unsupported mechanics to fill a gap.
 Split overview statements that combine claims with different support, applicability
 or uncertainty; attach evidence to verified relationships, evidence and conditions
@@ -114,13 +124,19 @@ can be verified, keep useful unresolved needs in run questions and accurate sour
 access observations, without creating a fake finding. Unknown version coverage
 remains an explicit applicability limit rather than presumed compatibility.
 
-Broad coaching loads the saved overview/equivalent and relevant topics. Limited
-lookups need not load the entire model. Reuse adequate research and reported context,
+For broad coaching, use the [overview lookup order](../data-model.md#overview-lookup)
+and load only the relevant topics and premises. Limited lookups load only the
+records needed for the request. Reuse adequate research and reported context,
 including across hosts and new runs, without repeating orientation or interview.
 Deepen incrementally for a new goal, stage, interest or unanswered material question.
-For a version change or conflicting evidence, reassess affected premises, overview
-claims and dependent plans before reuse; preserve unaffected research and provenance.
-Other runs reassess when loaded; no background recrawl or progress rewrite is required.
+When a run changes version, reassess applicability to that run before reusing
+premises, overview claims or plans. Keep a shared finding supported for its
+verified coverage if the evidence still holds there. Reassess or mark affected
+plans in the selected run for review. If evidence calls an existing claim into
+question within its verified coverage, mark the affected shared findings and
+dependent overview claims for review or as disputed, and reassess dependent
+plans before reuse. Retain provenance and unaffected research. Reassess other
+runs when loaded.
 
 All writes retain the [baseline revision, verified-save, publication and recovery rules](../../001-ai-game-coach/contracts/workspace.md#write-and-recovery-contract).
 Publish sources/results and topic premises before a derived overview, verify a new

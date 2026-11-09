@@ -16,9 +16,10 @@ The following decisions resolve all technical unknowns for this expansion.
 ### 1. Connected understanding through existing findings
 
 - **Decision**: Retain JSON v1. Create a useful `overview` topic on demand, or extend
-  an existing equivalent. Save actual loop/progression explanations and relationships
-  in findings, with substantive topic details where needed. Use evidence for sourced
-  relationships and `derived_from` for actual reasoning dependencies.
+  an existing equivalent using the [overview lookup order](data-model.md#overview-lookup).
+  Save actual loop/progression explanations and relationships in findings, with
+  substantive topic details where needed. Use evidence for sourced relationships
+  and `derived_from` for actual reasoning dependencies.
 - **Rationale**: Findings already distinguish `fact`, `sourced_strategy` and
   `deduction`, with applicability, spoiler metadata, evidence and review status.
   Statements can explain system interactions without a separate graph schema.
@@ -32,10 +33,11 @@ The following decisions resolve all technical unknowns for this expansion.
 ### 2. Limits and questions without a migration
 
 - **Decision**: Put finding-specific unknowns in `applicability.notes`; retain a
-  compact pass-wide coverage/gap note on an overview finding. If no overview claim
-  can be verified yet, retain useful unanswered needs in the selected run's
-  `questions` rather than fabricate a sourced finding. Mechanics-informed questions
-  for this player also use `questions`; answers become reported `entries`.
+  compact pass-wide gap note on an overview finding or the most relevant supported
+  topic finding while the overview is pending. If all evidence is unavailable,
+  retain useful unanswered needs in the selected run's `questions` and accurate
+  access observations in the relevant index. Mechanics-informed player questions
+  also use `questions`. Answers become reported `entries`.
 - **Rationale**: This preserves explicit gaps alongside the knowledge they limit and
   keeps unsupported ideas out of supported mechanics. Game-wide findings never
   depend on a run's state. Reusable questions can be generated from saved mechanics;
@@ -62,13 +64,14 @@ The following decisions resolve all technical unknowns for this expansion.
 
 - **Decision**: Stop when the adequacy criteria in the
   [pass contract](contracts/game-understanding.md#adequacy-and-stopping) are met.
-  Stop earlier for a player limit, inaccessible/conflicting evidence, protected
-  material, diminishing relevant returns or a missing player answer. Save specific
-  limitations; do not claim full coverage. New searches must address a named unmet
-  criterion or material decision, not open unrelated research branches.
+  Stop earlier when a player limit, inaccessible or conflicting evidence, protected
+  material, diminishing relevant returns or a missing player answer prevents useful
+  further research. Save specific limitations. New searches must address a named
+  unmet criterion or material decision.
 - **Rationale**: Source counts, minutes and question quotas do not establish
   understanding. A partial stop bounds the pass even when full adequacy is impossible.
-  Quick help must remain useful and must not quietly resume deferred research.
+  Quick help stays within the current limit. A later request can reopen a temporary
+  deferral. Explicitly lasting run restrictions use existing reported constraints.
 - **Alternatives considered**: Fetch-until-complete has no safe bound. Arbitrary
   tool budgets can stop before useful evidence or reward redundant fetches. A fixed
   detailed encyclopedia violates scope. Thorough depth still stays relevant/bounded.
@@ -78,8 +81,10 @@ The following decisions resolve all technical unknowns for this expansion.
 - **Decision**: Broad coaching loads the overview/equivalent plus relevant topics;
   narrow lookups load only what they need. Judge content adequacy even in legacy
   records. Reuse applicable supported explanations without reopening adequate sources.
-  Reassess affected findings, derived overview content and selected-run plans when
-  versions change or evidence conflicts; preserve unaffected records and provenance.
+  Reassess applicability for the selected run when its version changes. Keep shared
+  findings supported within their verified coverage. Reopen shared findings and
+  their dependents when evidence undermines that coverage, preserving provenance
+  and unaffected records.
 - **Rationale**: The existing registry, derivations, plan dependencies and per-file
   save/recovery ordering already support incremental improvement and targeted review.
 - **Alternatives considered**: Full recrawls, automatic expiry and background updates

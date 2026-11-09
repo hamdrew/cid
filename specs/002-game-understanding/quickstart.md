@@ -49,8 +49,9 @@ normal host and game; no fixed trial count, transcript or cross-host matrix is n
 | Discuss an open goal or ask why one approach fits | Explain concrete costs/benefits and useful options beyond quest advancement where relevant; sourced strategy and material untested reasoning remain distinct |
 | Start a fresh conversation about the same game | Read saved overview/relevant topics and run context; avoid re-fetching adequate unchanged sources or repeating answered questions |
 | Ask for a quick answer or decline a question | Give narrower supported/conditional help, retain material gaps and honor the limit; do not force the full pass or change a lasting preference without a request |
-| Play a game without character builds or quest progression | Research and questions use its actual choice systems; no invented RPG categories or mandatory stat sheet |
-| Encounter changed version or conflicting evidence | Reassess affected findings, derived overview and plans before reuse; keep unaffected knowledge, source history, preferences and progress |
+| Return to a deferred topic, or set an explicit restriction for the run | Research a later relevant request after a temporary deferral. Reload a lasting run restriction and clarify a request that appears to cross it. |
+| Play a game without character builds or a fixed progression path | Use the game's actual choice systems and distinguish what persists from whether progression is linear. |
+| Use a different patch in another run, or encounter conflicting evidence | Reassess applicability and dependent plans for the selected run. Retain supported findings within their verified coverage and reopen shared claims when evidence undermines that coverage. |
 | Have uncertain progress or strict spoiler boundaries | Broad understanding, questions and output avoid protected discoveries and revealing labels; a partial pass is allowed |
 
 If useful, inspect saved `game.json.topics`, topic statements/evidence/limits,
